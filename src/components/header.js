@@ -5,29 +5,35 @@ import React from "react"
 const Header = ({ siteTitle }) => (
   <header
     style={{
-      background: `rebeccapurple`,
+      // background: `rebeccapurple`,
       marginBottom: `1.45rem`,
     }}
   >
-    <div
+    <nav
       style={{
         margin: `0 auto`,
         maxWidth: 960,
         padding: `1.45rem 1.0875rem`,
+        display: 'flex',
+        justifyContent: 'space-between'
       }}
     >
       <h1 style={{ margin: 0 }}>
         <Link
           to="/"
           style={{
-            color: `white`,
+            color: `Black`,
             textDecoration: `none`,
           }}
         >
           {siteTitle}
         </Link>
       </h1>
-    </div>
+      {/* dropdown for account options */}
+      <h3>
+        Alex Lane
+      </h3>
+    </nav>
   </header>
 )
 
