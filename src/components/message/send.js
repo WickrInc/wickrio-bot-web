@@ -1,22 +1,50 @@
 import React, { useEffect, useState, useContext } from "react"
 import { Link } from "gatsby"
-import Image from "../image"
+import Attach from "../attach"
+import Audio from "../audio"
 import axios from "axios"
-import { MessageContext, MessageContextProvider } from "./context"
+import { MessageContext } from "./context"
 
 // help command includes url and authentication code 
 // console.log(MessageContextProvider)
 
-const SendMessage = ({ authcode, username, authn }) => {
-  const { getSecGroups, secGroups, sendBroadcast, message, setMessage, sendStatus } = useContext(MessageContext)
+// be able to see uplaoded file preview
+const SendMessage = () => {
+  const {
+    getSecGroups,
+    secGroups,
+    sendBroadcast,
+    message,
+    setMessage,
+    sendStatus,
+    setAcknowledge,
+    acknowledge,
+    setRepeat,
+    repeat,
+    attachment,
+    setAttachment
+  } = useContext(MessageContext)
+
   const [selectedSecGroup, setSelectedSecGroup] = useState()
+  // const {} = useContext(MessageContext)
   // run immediately & everytime state changes
   useEffect(() => {
     // authorizeUser()
-    getSecGroups(username, authcode, authn)
-    sendStatus(username, authcode, authn)
+    getSecGroups()
+    sendStatus()
     // console.log(secGroups)
   }, [])
+
+  const buildFileSelector = () => {
+    const fileSelector = document.createElement('input');
+    fileSelector.setAttribute('type', 'file');
+    fileSelector.setAttribute('id', 'file');
+    fileSelector.setAttribute('name', 'attachment');
+    fileSelector.addEventListener("change", (event) => {
+      setAttachment(fileSelector.files[0])
+    })
+    fileSelector.click();
+  }
 
 
   return (
@@ -35,7 +63,7 @@ const SendMessage = ({ authcode, username, authn }) => {
       }}>
 
         <h3 className="title">New Broadcast Message</h3>
-        <button onClick={() => sendBroadcast(username, authcode, authn)} type="button"
+        <button onClick={() => sendBroadcast()} type="button"
           style={{
             width: '86px',
             height: '36px',
@@ -65,8 +93,10 @@ const SendMessage = ({ authcode, username, authn }) => {
           style={{
             flex: '0 0 10%'
 
-          }}>Send To</label>
+          }}
+          htmlFor="secgroup">Send To</label>
         <select
+          id='secgroup'
           className="border"
           style={{
             flex: '0 0 30%',
@@ -93,10 +123,12 @@ const SendMessage = ({ authcode, username, authn }) => {
 
         <label
           className="labels"
+          htmlFor="message"
           style={{
             flex: '0 0 10%'
           }}>Message</label>
         <textarea
+          id="message"
           className="border"
           style={{
             flex: 1
@@ -114,11 +146,23 @@ const SendMessage = ({ authcode, username, authn }) => {
           right: '10px',
           bottom: '10px'
         }}>
-          <div style={{ width: `24px` }}>
-            <Image />
+          <div
+            style={{ width: `24px` }}
+            onClick={() => {
+              const file = document.getElementById('file')
+              console.log(file)
+            }}>
+            <Audio />
           </div>
-          <div style={{ width: `24px` }}>
-            <Image />
+          <div style={{ width: `24px` }}
+            onClick={
+              // () => {
+              // console.log('hello')
+              buildFileSelector
+              // setAttachment()
+              // }
+            }>
+            <Attach />
           </div>
         </div>
       </div>
@@ -135,14 +179,28 @@ const SendMessage = ({ authcode, username, authn }) => {
           style={{
             marginRight: '4px'
           }}
-          type="checkbox" name="acknowledgement" id="acknowledgement" />
+          checked={acknowledge}
+          onChange={e => {
+            // setAck(!ack)
+            let checkboxValue = !acknowledge
+            setAcknowledge(checkboxValue)
+          }}
+
+          type="checkbox" name="acknowledge" id="acknowledge" />
         <label
           className="smlabels"
-          htmlFor="acknowledgement">Ask for acknowledgement </label>
+          htmlFor="acknowledge">Ask for acknowledgement </label>
         <input
           style={{
             marginLeft: '32px',
             marginRight: '4px'
+          }}
+          checked={repeat}
+          onChange={e => {
+            // console.log(repeat)
+            setRepeat(!repeat)
+            // let checkboxValue = !repeat
+            // setAck(checkboxValue)
           }}
           className="border"
           type="checkbox" name="Repeat" id="Repeat" />

@@ -23,14 +23,40 @@ body {
   --test: #f7f7f7;
 }
 
+.tlabel {
+  height: 16px;
+  font-family: 'Open Sans';
+  font-size: 14px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.14;
+  letter-spacing: 1.28px;
+  text-align: right;
+  color: var(--text-light);
+}
+
+.trow {
+  text-align: center;
+}
+
+.Date {
+  height: 16px;
+  font-family: 'Open Sans';
+  font-size: 14px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.14;
+  letter-spacing: 1.28px;
+  text-align: center;
+  color: var(--dark);
+}
+
 .border {
   border-radius: 4px;
   border: solid 1px var(--bg-light);
   background-color: var(--light);
-  padding: 16px;
-}
-
-.sentsection {
   padding: 16px;
 }
 

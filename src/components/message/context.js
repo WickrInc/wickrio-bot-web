@@ -23,7 +23,7 @@ const MessageContext = createContext();
 
 
 
-const MessageContextProvider = ({ children }) => {
+const MessageContextProvider = ({ children, authcode, username, authn }) => {
   // const [state, dispatch] = React.useReducer(countReducer, { count: 0 })
 
   // hardcoded should be dynamic, received by the /panel command
@@ -35,15 +35,19 @@ const MessageContextProvider = ({ children }) => {
   const baseAPIurl = `${hostIP}:${botPort}/WickrIO/V1/Apps/${botAPIKey}`
 
 
-
-
+  const [user, setUser] = useState({
+    authcode,
+    username,
+    authn
+  })
   const [secGroups, setSecGroups] = useState([])
   const [sentBroadcasts, setSentBroadcasts] = useState([])
   const [message, setMessage] = useState("")
-  const [ack, setAck] = useState("")
-  const [repeat, setRepeat] = useState("")
+  const [acknowledge, setAcknowledge] = useState(false)
+  const [repeat, setRepeat] = useState(false)
   const [repeatNum, setRepeatNum] = useState("")
   const [freq, setFreq] = useState()
+  const [attachment, setAttachment] = useState()
 
 
 
@@ -51,7 +55,7 @@ const MessageContextProvider = ({ children }) => {
   // a wickr front end client will pass the authorization token to this app when launched from a signed in user 
 
   // send username and basic token as an authorization header
-  const sendAuthentication = async (username) => {
+  const sendAuthentication = async () => {
     // Authorization: Basic base64_auth_token
 
     const authpath = `${baseAPIurl}/Authenticate/${username}`
@@ -72,7 +76,7 @@ const MessageContextProvider = ({ children }) => {
   // stealing / sharing base 64 token or the given url could allow for mocked requests from the allowed resources from attackers
   // should hide base 64 encoded token instead of sharing it via url
   // get list of security groups
-  const getSecGroups = async (username, authcode, authn) => {
+  const getSecGroups = async () => {
     // console.log({ username, authn, authcode })
     const secgrouppath = `${baseAPIurl}/SecGroups/${username}/${authcode}`
     // const botAuthToken = `Basic ${authn}`
@@ -92,15 +96,29 @@ const MessageContextProvider = ({ children }) => {
     }
   }
 
-  const sendBroadcast = async (username, auth, authn) => {
-    // console.log({ username, auth, authn, message })
+  const sendBroadcast = async () => {
+    console.log({ message, acknowledge, repeat })
 
-    const broadcastpath = `${baseAPIurl}/Broadcast/${username}/${auth}`
+    const broadcastpath = `${baseAPIurl}/Broadcast/${username}/${authcode}`
+
+    const formdata = new FormData()
+    formdata.append('message', message)
+    formdata.append('acknowledge', acknowledge)
+    formdata.append('repeat', repeat)
+
+
+    // const formdata = {
+    //   'message': message,
+    //   'acknowledge': acknowledge,
+    //   'repeat': repeat
+    // }
+
+    if (attachment) {
+      formdata.append('attachment', attachment)
+    }
 
     try {
-      const response = await axios.post(broadcastpath, {
-        'message': message
-      }, {
+      const response = await axios.post(broadcastpath, formdata, {
         headers: {
           'Authorization': `Basic ${authn}`
         }
@@ -125,10 +143,10 @@ const MessageContextProvider = ({ children }) => {
     }
   }
 
-  const sendStatus = async (username, auth, authn) => {
+  const sendStatus = async () => {
     // console.log({ username, auth, authn, message })
 
-    const statuspath = `${baseAPIurl}/Status/${username}/${auth}`
+    const statuspath = `${baseAPIurl}/Status/${username}/${authcode}`
 
     try {
       const response = await axios.get(statuspath, {
@@ -153,7 +171,16 @@ const MessageContextProvider = ({ children }) => {
       secGroups,
       setMessage,
       message,
-
+      acknowledge,
+      setAcknowledge,
+      repeat,
+      setRepeat,
+      repeatNum,
+      setRepeatNum,
+      freq,
+      setFreq,
+      attachment,
+      setAttachment
     }}>
       {children}
     </MessageContext.Provider>

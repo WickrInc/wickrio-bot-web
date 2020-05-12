@@ -6,24 +6,24 @@ const SentMessages = () => {
   const { sentBroadcasts } = useContext(MessageContext)
 
   // being reloaded twice on initial render
+
   // and after every change in send component
-  console.log(sentBroadcasts)
+  // console.log(sentBroadcasts)
 
   return (
     <section
       className="sentsection"
     >
-      <h3>Sent Messages</h3>
+      <h3 className="title">Sent Messages</h3>
       <p className="subtitle">Click on the message to view detailed reports</p>
       <table>
         <thead>
           <tr>
-
-            <th>Date</th>
-            <th>Received</th>
-            <th>Pending</th>
-            <th>Failed</th>
-            <th>Acknowledged</th>
+            <th className="Date">Date</th>
+            <th className="tlabel">Received</th>
+            <th className="tlabel">Pending</th>
+            <th className="tlabel">Failed</th>
+            <th className="tlabel">Acknowledged</th>
           </tr>
         </thead>
         <tbody>
@@ -48,10 +48,10 @@ const SentMessages = () => {
                   <p>Download</p>
                 </div>
               </td>
-              <td>r</td>
-              <td>p</td>
-              <td>f</td>
-              <td>a</td>
+              <td className="trow">r</td>
+              <td className="trow">p</td>
+              <td className="trow">f</td>
+              <td className="trow">a</td>
             </tr>
           )}
         </tbody>
