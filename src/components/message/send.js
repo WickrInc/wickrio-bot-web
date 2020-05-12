@@ -5,6 +5,9 @@ import Audio from "../audio"
 import axios from "axios"
 import { MessageContext } from "./context"
 
+// add ALL GROUPS / WHOLE NETWORK
+
+
 // help command includes url and authentication code 
 // console.log(MessageContextProvider)
 
