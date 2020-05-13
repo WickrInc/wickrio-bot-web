@@ -57,7 +57,7 @@ const SendMessage = () => {
         display: 'flex',
         flexDirection: 'column',
         padding: '12px',
-        minWidth: '350px'
+        // minWidth: '350px'
       }}
     >
       <div style={{
@@ -89,13 +89,14 @@ const SendMessage = () => {
       <div style={{
         display: 'flex',
         alignItems: 'center',
-        marginBottom: '12px'
+        marginBottom: '12px',
+        flexWrap: 'wrap'
       }}>
 
         <label
           className="labels"
           style={{
-            paddingRight: '20px',
+            padding: '4px 20px 4px',
             minWidth: '120px'
           }}
           htmlFor="secgroup">Send To</label>
@@ -103,7 +104,8 @@ const SendMessage = () => {
           id='secgroup'
           className="border"
           style={{
-            flex: '0 0 50%',
+            flex: '50%',
+            minWidth: '290px',
           }}
           defaultValue="default"
           onChange={setSelectedSecGroup}
@@ -120,22 +122,23 @@ const SendMessage = () => {
       <div style={{
         display: 'flex',
         position: 'relative',
-        alignItems: 'center'
-
+        alignItems: 'center',
+        flexWrap: 'wrap'
       }}>
 
         <label
           className="labels"
           htmlFor="message"
           style={{
-            paddingRight: '20px',
+            padding: '4px 20px 4px',
             minWidth: '120px'
           }}>Message</label>
         <textarea
           id="message"
           className="border"
           style={{
-            flex: 1
+            flex: 1,
+            minWidth: '290px'
           }}
           value={message}
           onChange={e => {
@@ -172,7 +175,7 @@ const SendMessage = () => {
       </div>
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 250px))',
         alignItems: 'center',
         margin: '18px 0 18px 120px'
       }}>
@@ -218,25 +221,27 @@ const SendMessage = () => {
       <div style={{
         display: 'grid',
         alignItems: 'center',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(275px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(299px, 1fr))',
         gridGap: '20px'
 
       }}>
         <div style={{
           display: 'flex',
-          alignItems: 'center'
+          alignItems: 'center',
+          flexWrap: 'wrap'
         }}>
           <label
             className="labels"
             style={{
               // flex: '.2',
-              paddingRight: '20px',
+              padding: '4px 20px 4px',
               minWidth: '120px'
             }} htmlFor="numrepeat">Repeat</label>
           <select
             className="border"
 
             style={{
+              minWidth: '290px',
               flex: '1'
             }}
             defaultValue="Number of times "
@@ -250,17 +255,20 @@ const SendMessage = () => {
         </div>
         <div style={{
           display: 'flex',
-          alignItems: 'center'
+          alignItems: 'center',
+          flexWrap: 'wrap'
+
         }}>
           <label
             className="labels"
             style={{
-              paddingRight: '20px',
+              padding: '4px 20px 4px',
               minWidth: '120px'
             }} htmlFor="frequency">Frequency</label>
           <select
             className="border"
             style={{
+              minWidth: '290px',
               flex: 1
             }}
             defaultValue="Send message every..."
