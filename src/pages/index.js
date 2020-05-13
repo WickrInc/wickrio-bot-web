@@ -23,7 +23,7 @@ const IndexPage = ({ location: { search } }) => {
     <Layout>
       <SEO title="Home" />
       <div style={{
-        display: 'flex'
+        display: 'flex',
       }}>
         <div>
           <h1>Broadcast Bot</h1>

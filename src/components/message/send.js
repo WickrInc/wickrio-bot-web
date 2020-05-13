@@ -55,14 +55,15 @@ const SendMessage = () => {
       className="border"
       style={{
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        padding: '12px',
+        minWidth: '350px'
       }}
     >
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: '24px'
       }}>
 
         <h3 className="title">New Broadcast Message</h3>
@@ -87,23 +88,22 @@ const SendMessage = () => {
       </div>
       <div style={{
         display: 'flex',
-        alignItems: 'center'
-
+        alignItems: 'center',
+        marginBottom: '12px'
       }}>
 
         <label
           className="labels"
           style={{
-            flex: '0 0 10%'
-
+            paddingRight: '20px',
+            minWidth: '120px'
           }}
           htmlFor="secgroup">Send To</label>
         <select
           id='secgroup'
           className="border"
           style={{
-            flex: '0 0 30%',
-            marginBottom: '16px'
+            flex: '0 0 50%',
           }}
           defaultValue="default"
           onChange={setSelectedSecGroup}
@@ -128,7 +128,8 @@ const SendMessage = () => {
           className="labels"
           htmlFor="message"
           style={{
-            flex: '0 0 10%'
+            paddingRight: '20px',
+            minWidth: '120px'
           }}>Message</label>
         <textarea
           id="message"
@@ -170,88 +171,106 @@ const SendMessage = () => {
         </div>
       </div>
       <div style={{
-        display: 'flex',
-        width: '90%',
-        left: '10%',
-        position: 'relative',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
         alignItems: 'center',
-        margin: '18px 0 18px 24px'
+        margin: '18px 0 18px 120px'
       }}>
-        <input
-          className="border"
-          style={{
-            marginRight: '4px'
-          }}
-          checked={acknowledge}
-          onChange={e => {
-            // setAck(!ack)
-            let checkboxValue = !acknowledge
-            setAcknowledge(checkboxValue)
-          }}
+        <div>
 
-          type="checkbox" name="acknowledge" id="acknowledge" />
-        <label
-          className="smlabels"
-          htmlFor="acknowledge">Ask for acknowledgement </label>
-        <input
-          style={{
-            marginLeft: '32px',
-            marginRight: '4px'
-          }}
-          checked={repeat}
-          onChange={e => {
-            // console.log(repeat)
-            setRepeat(!repeat)
-            // let checkboxValue = !repeat
-            // setAck(checkboxValue)
-          }}
-          className="border"
-          type="checkbox" name="Repeat" id="Repeat" />
-        <label
-          className="smlabels"
-          htmlFor="Repeat">Repeat</label>
+          <input
+            className="border"
+            style={{
+              marginRight: '4px'
+            }}
+            checked={acknowledge}
+            onChange={e => {
+              // setAck(!ack)
+              let checkboxValue = !acknowledge
+              setAcknowledge(checkboxValue)
+            }}
+
+            type="checkbox" name="acknowledge" id="acknowledge" />
+          <label
+            className="smlabels"
+            htmlFor="acknowledge">Ask for acknowledgement </label>
+        </div>
+        <div>
+
+          <input
+            style={{
+              marginRight: '4px'
+            }}
+            checked={repeat}
+            onChange={e => {
+              // console.log(repeat)
+              setRepeat(!repeat)
+              // let checkboxValue = !repeat
+              // setAck(checkboxValue)
+            }}
+            className="border"
+            type="checkbox" name="Repeat" id="Repeat" />
+          <label
+            className="smlabels"
+            htmlFor="Repeat">Repeat</label>
+        </div>
       </div>
       <div style={{
-        display: 'flex',
-        alignItems: 'center'
+        display: 'grid',
+        alignItems: 'center',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(275px, 1fr))',
+        gridGap: '20px'
+
       }}>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center'
+        }}>
+          <label
+            className="labels"
+            style={{
+              // flex: '.2',
+              paddingRight: '20px',
+              minWidth: '120px'
+            }} htmlFor="numrepeat">Repeat</label>
+          <select
+            className="border"
 
-        <label
-          className="labels"
-          style={{
-            flex: '0 0 10%'
-          }} htmlFor="numrepeat">Repeat</label>
-        <select
-          className="border"
+            style={{
+              flex: '1'
+            }}
+            defaultValue="Number of times "
+            type="dropdown" id="numrepeat" name="numrepeat">
+            <option value="volvo">Volvo</option>
+            <option value="saab">Saab</option>
+            <option value="fiat">Fiat</option>
+            <option value="audi">Audi</option>
+          </select>
 
-          style={{
-            flex: '0 0 30%'
-          }}
-          defaultValue="Number of times "
-          type="dropdown" id="numrepeat" name="numrepeat">
-          <option value="volvo">Volvo</option>
-          <option value="saab">Saab</option>
-          <option value="fiat">Fiat</option>
-          <option value="audi">Audi</option>
-        </select>
-        <label
-          className="labels"
-          style={{
-            marginLeft: '64px',
-            flex: '0 0 10%'
-          }} htmlFor="frequency">Frequency</label>
-        <select
-          className="border"
-          style={{
-            flex: '0 0 30%'
-          }}
-          defaultValue="Send message every..."
-          type="dropdown" id="frequency" name="frequency">
-          <option value="volvo">Volvo</option>
-          <option value="saab">Saab</option>
-          <option value="fiat">Fiat</option>
-          <option value="audi">Audi</option>
-        </select>
+        </div>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center'
+        }}>
+          <label
+            className="labels"
+            style={{
+              paddingRight: '20px',
+              minWidth: '120px'
+            }} htmlFor="frequency">Frequency</label>
+          <select
+            className="border"
+            style={{
+              flex: 1
+            }}
+            defaultValue="Send message every..."
+            type="dropdown" id="frequency" name="frequency">
+            <option value="volvo">Volvo</option>
+            <option value="saab">Saab</option>
+            <option value="fiat">Fiat</option>
+            <option value="audi">Audi</option>
+          </select>
+        </div>
       </div>
     </form >
   )
