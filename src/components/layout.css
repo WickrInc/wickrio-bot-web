@@ -9,6 +9,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+td:first-child, th:first-child {
+  padding-left: 12px;
+}
+
 :root {
   --dark: #000000;
   --bg-dark: #cdcdcd;
@@ -687,11 +691,11 @@ th {
 }
 th:first-child,
 td:first-child {
-  padding-left: 0;
+  padding-left: 12px;
 }
 th:last-child,
 td:last-child {
-  padding-right: 0;
+  padding-right: 12px;
 }
 tt,
 code {
