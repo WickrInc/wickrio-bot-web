@@ -64,6 +64,7 @@ const SendMessage = () => {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
+        marginBottom: '14px'
       }}>
 
         <h3 className="title">New Broadcast Message</h3>
