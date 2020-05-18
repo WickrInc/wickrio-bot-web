@@ -13,7 +13,7 @@ const IndexPage = ({ location: { search } }) => {
 
   // TODO: automatically authenticate the user instead of being passed params in url
   let params = new URLSearchParams(search)
-  let username = params.get('username')
+  let username = params.get('username')?.replace(' ', '+')
   let authcode = params.get('auth')
   let authn = params.get('authn')
 
