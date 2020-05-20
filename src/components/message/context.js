@@ -78,7 +78,7 @@ const MessageContextProvider = ({ children, authcode, username, authn }) => {
   // get list of security groups
   const getSecGroups = async () => {
     // console.log({ username, authn, authcode })
-    const secgrouppath = `${baseAPIurl}/SecGroups/${username}/${authcode}`
+    const secgrouppath = encodeURIComponent(`${baseAPIurl}/SecGroups/${username}/${authcode}`)
     // const botAuthToken = `Basic ${authn}`
 
     try {
@@ -88,7 +88,7 @@ const MessageContextProvider = ({ children, authcode, username, authn }) => {
         }
       })
       // console.log(response)
-      setSecGroups(response.data)
+      // setSecGroups(response.data)
 
     }
     catch (err) {
@@ -99,7 +99,7 @@ const MessageContextProvider = ({ children, authcode, username, authn }) => {
   const sendBroadcast = async () => {
     console.log({ message, acknowledge, repeat })
 
-    const broadcastpath = `${baseAPIurl}/Broadcast/${username}/${authcode}`
+    const broadcastpath = encodeURI(`${baseAPIurl}/Broadcast/${username}/${authcode}`)
 
     const formdata = new FormData()
     formdata.append('message', message)
@@ -124,15 +124,15 @@ const MessageContextProvider = ({ children, authcode, username, authn }) => {
         }
       })
       // console.log({ response })
-      setSentBroadcasts([{
-        'message_id': 'hardcoded, needs response from api',
-        'message': message,
-        'sender': username,
-        'target': message,
-        'when_sent': new Date().toLocaleString()
-      }, ...sentBroadcasts,
+      // setSentBroadcasts([{
+      //   'message_id': 'hardcoded, needs response from api',
+      //   'message': message,
+      //   'sender': username,
+      //   'target': message,
+      //   'when_sent': new Date().toLocaleString()
+      // }, ...sentBroadcasts,
 
-      ])
+      // ])
 
       // sendStatus(username, auth, authn)
       // setSentBroadcasts(response.data)
@@ -154,7 +154,7 @@ const MessageContextProvider = ({ children, authcode, username, authn }) => {
           'Authorization': `Basic ${authn}`
         }
       })
-      setSentBroadcasts(response.data)
+      // setSentBroadcasts(response.data)
     }
     catch (err) {
       console.log(err)

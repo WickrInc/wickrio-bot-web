@@ -31,7 +31,7 @@ const Header = ({ siteTitle }) => (
       </h1>
       {/* dropdown for account options */}
       <h3>
-        Alex Lane
+        Admin
       </h3>
     </nav>
   </header>
