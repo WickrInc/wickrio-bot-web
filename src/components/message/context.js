@@ -51,6 +51,7 @@ const MessageContextProvider = ({ children, token, }) => {
 
   const getSecGroups = async () => {
     const secgrouppath = encodeURI(`${baseAPIurl}/SecGroups`)
+
     try {
       const response = await axios.get(secgrouppath, {
         headers: {
@@ -58,6 +59,7 @@ const MessageContextProvider = ({ children, token, }) => {
         }
       })
       setSecGroups(response.data)
+
     }
     catch (err) {
       console.log(err)
@@ -68,6 +70,7 @@ const MessageContextProvider = ({ children, token, }) => {
     console.log({ message, acknowledge, repeat, selectedSecGroup, freq, repeatNum })
     if (!message) return console.log("need a message")
     const broadcastpath = encodeURI(`${baseAPIurl}/Broadcast`)
+
     const formdata = new FormData()
     formdata.append('message', message)
     formdata.append('acknowledge', acknowledge)
@@ -107,6 +110,7 @@ const MessageContextProvider = ({ children, token, }) => {
           'when_sent': new Date().toLocaleString()
         }])
       }
+
     }
     catch (err) {
       console.log(err)
