@@ -13,6 +13,10 @@ body {
 td:first-child, th:first-child {
   padding-left: 12px;
 }
+select {
+  min-width: 284px;
+  
+}
 
 :root {
   --dark: #000000;
@@ -37,7 +41,7 @@ td:first-child, th:first-child {
   font-style: normal;
   line-height: 1.14;
   letter-spacing: 1.28px;
-  text-align: right;
+  text-align: center;
   color: var(--text-light);
 }
 
@@ -74,6 +78,7 @@ td:first-child, th:first-child {
   line-height: 1.14;
   letter-spacing: 1.28px;
   text-align: right;
+  min-width: 120px;
   /* margin-right: 24px; */
   color: rgba(0, 0, 0, 0.87)
 }
@@ -86,7 +91,7 @@ td:first-child, th:first-child {
   line-height: 1.5;
   letter-spacing: 0.51px;
   color: var(--dark);
-  width: 70%;
+  max-width: 650px;
 }
 
 .title {
@@ -104,6 +109,39 @@ td:first-child, th:first-child {
 select {
   height: 48px;
 }
+.disabledSendButton {
+  width: 86px;
+            height: 36px;
+            font-family: 'Open Sans';
+            font-size: 14px;
+            font-weight: 600;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.14;
+            border-radius: 4px;
+            line-height: 1.14;
+            letter-spacing: 1.28px;
+            text-align: center;
+            color: var(--light);
+            background-color: var(--bg-dark);
+          }
+
+          .sendButton {
+            width: 86px;
+            height: 36px;
+            font-family: 'Open Sans';
+            font-size: 14px;
+            font-weight: 600;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.14;
+            border-radius: 4px;
+            background-color: var(--secondary);
+            line-height: 1.14;
+            letter-spacing: 1.28px;
+            text-align: center;
+            color: var(--light);
+          }
 
 .smlabels{
   font-family: 'Open Sans';
@@ -115,8 +153,47 @@ select {
   letter-spacing: 0.25px;
   color: var(--dark);
 }
+.sentmessage {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: Open Sans;
+  line-height: 1.5;
+  letter-spacing: 0.15px;
+  color: var(--dark);
+}
 
-tr:nth-child(even) {background-color: #f2f2f2;}
+
+
+
+@media only screen and (min-width: 601px) {
+  .checkboxes {
+    margin: 18px 0px 18px 120px;
+  }
+  .labels {
+    padding: 4px 20px;
+  }
+}
+
+@media only screen and (max-width:600px) {
+  .checkboxes {
+    margin: 18px 0px;
+  }
+  .labels {
+    text-align: left;
+    padding: 4px;
+  }
+}
+
+tr:nth-child(even) {  background-color: var(--light)}
+tr:nth-child(odd) {  background-color:#f2f3f5}
+thead > tr:first-child {
+  background-color: var(--light)
+}
+thead {background-color:  var(--light)}
 
 article,
 aside,
@@ -680,7 +757,7 @@ thead {
 td,
 th {
   text-align: left;
-  border-bottom: 1px solid hsla(0, 0%, 0%, 0.12);
+  /* border-bottom: 1px solid hsla(0, 0%, 0%, 0.12); */
   font-feature-settings: "tnum";
   -moz-font-feature-settings: "tnum";
   -ms-font-feature-settings: "tnum";

@@ -1,41 +1,49 @@
 import { Link } from "gatsby"
 import PropTypes from "prop-types"
-import React from "react"
+import React, { useContext } from "react"
+import { MessageContext } from "./message/context"
 
-const Header = ({ siteTitle }) => (
-  <header
-    style={{
-      // background: `rebeccapurple`,
-      marginBottom: `1.45rem`,
-    }}
-  >
-    <nav
+const Header = ({ siteTitle }) => {
+  const {
+    user
+  } = useContext(MessageContext)
+
+  return (
+    <header
       style={{
-        margin: `0 auto`,
-        maxWidth: 960,
-        padding: `1.45rem 1.0875rem`,
-        display: 'flex',
-        justifyContent: 'space-between'
+        // background: `rebeccapurple`,
+        marginBottom: `1.45rem`,
       }}
     >
-      <h1 style={{ margin: 0 }}>
-        <Link
-          to="/"
-          style={{
-            color: `Black`,
-            textDecoration: `none`,
-          }}
-        >
-          {siteTitle}
-        </Link>
-      </h1>
-      {/* dropdown for account options */}
-      <h3>
-        Alex Lane
-      </h3>
-    </nav>
-  </header>
-)
+      <nav
+        style={{
+          margin: `0 auto`,
+          maxWidth: 960,
+          padding: `1.45rem 1.0875rem`,
+          display: 'flex',
+          justifyContent: 'space-between'
+        }}
+      >
+        <h1 style={{ margin: 0 }}>
+          <Link
+            to="/"
+            style={{
+              color: `Black`,
+              textDecoration: `none`,
+            }}
+          >
+            {siteTitle}
+          </Link>
+        </h1>
+        {/* dropdown for account options */}
+        <h3>
+          {user?.email
+            || 'Unauthenticated'}
+        </h3>
+      </nav>
+    </header>
+  )
+}
 
 Header.propTypes = {
   siteTitle: PropTypes.string,

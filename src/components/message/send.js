@@ -1,41 +1,45 @@
-import React, { useEffect, useState, useContext } from "react"
+import React, { useEffect, useContext } from "react"
 import { Link } from "gatsby"
 import Attach from "../attach"
 import Audio from "../audio"
-import axios from "axios"
 import { MessageContext } from "./context"
 
+let repeatlist = [{
+  value: 2,
+  name: '2 times'
+}]
+
+let freqlist = [{
+  value: 1500,
+  name: 'every 15 seconds'
+}]
+
 // add ALL GROUPS / WHOLE NETWORK
-
-
-// help command includes url and authentication code 
-// console.log(MessageContextProvider)
-
 // be able to see uplaoded file preview
 const SendMessage = () => {
   const {
+    user,
+    sendAuthentication,
     getSecGroups,
+    setSelectedSecGroup,
     secGroups,
+    setFreq,
     sendBroadcast,
     message,
     setMessage,
-    sendStatus,
     setAcknowledge,
     acknowledge,
-    setRepeat,
+    enableRepeat,
+    setRepeatNumber,
     repeat,
-    attachment,
     setAttachment
   } = useContext(MessageContext)
-
-  const [selectedSecGroup, setSelectedSecGroup] = useState()
-  // const {} = useContext(MessageContext)
   // run immediately & everytime state changes
+
   useEffect(() => {
-    // authorizeUser()
+    sendAuthentication()
+    // console.log({ user: user })
     getSecGroups()
-    sendStatus()
-    // console.log(secGroups)
   }, [])
 
   const buildFileSelector = () => {
@@ -49,14 +53,14 @@ const SendMessage = () => {
     fileSelector.click();
   }
 
-
   return (
     <form
       className="border"
       style={{
         display: 'flex',
         flexDirection: 'column',
-        padding: '12px',
+        padding: '16px 20px',
+        // minWidth: '375px'
         // minWidth: '350px'
       }}
     >
@@ -68,23 +72,11 @@ const SendMessage = () => {
       }}>
 
         <h3 className="title">New Broadcast Message</h3>
-        <button onClick={() => sendBroadcast()} type="button"
-          style={{
-            width: '86px',
-            height: '36px',
-            fontFamily: 'Open Sans',
-            fontSize: '14px',
-            fontWeight: 600,
-            fontStretch: 'normal',
-            fontStyle: 'normal',
-            lineHeight: 1.14,
-            borderRadius: '4px',
-            backgroundColor: 'var(--secondary)',
-            lineHeight: '1.14',
-            letterSpacing: '1.28px',
-            textAlign: 'center',
-            color: ' var(--light)'
-          }}
+        <button
+          type="button"
+          disabled={!message ? true : false}
+          onClick={() => sendBroadcast()}
+          className={message ? "sendButton" : 'disabledSendButton'}
         >Send</button>
       </div>
       <div style={{
@@ -97,23 +89,29 @@ const SendMessage = () => {
         <label
           className="labels"
           style={{
-            padding: '4px 20px 4px',
-            minWidth: '120px'
+            // padding: '4px 20px 4px',
+            // minWidth: '120px'
           }}
           htmlFor="secgroup">Send To</label>
         <select
           id='secgroup'
           className="border"
           style={{
-            flex: '50%',
-            minWidth: '290px',
+            flex: 1,
+            minWidth: '284px',
+            fontFamily: 'Open Sans',
+            fontSize: '14px',
+            textIndent: '6px'
           }}
           defaultValue="default"
-          onChange={setSelectedSecGroup}
-          type="dropdown" id="secgroup" name="secgroup">
-
-          <option value="default" disabled>Choose a Security Group</option>
-          {secGroups && secGroups.map((secgroup, idx) => {
+          onChange={e => {
+            setSelectedSecGroup(e.target.value)
+          }}
+          type="dropdown" id="secgroup" name="secgroup"
+        >
+          <option value="default" disabled>Select Security Group</option>
+          <option value='false'>Whole network</option>
+          {secGroups?.map((secgroup, idx) => {
             return (
               <option value={secgroup.id} key={idx}>{secgroup.name}</option>
             )
@@ -131,15 +129,16 @@ const SendMessage = () => {
           className="labels"
           htmlFor="message"
           style={{
-            padding: '4px 20px 4px',
-            minWidth: '120px'
           }}>Message</label>
         <textarea
           id="message"
           className="border"
           style={{
             flex: 1,
-            minWidth: '290px'
+            fontSize: '14px',
+            fontFamily: 'Open Sans',
+            minWidth: '284px',
+            padding: '16px 14px'
           }}
           value={message}
           onChange={e => {
@@ -174,26 +173,27 @@ const SendMessage = () => {
           </div>
         </div>
       </div>
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 250px))',
-        alignItems: 'center',
-        margin: '18px 0 18px 120px'
-      }}>
+      <div
+        className="checkboxes"
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(284px, 250px))',
+          alignItems: 'center',
+          // margin: '18px 0 18px 120px'
+        }}>
         <div>
 
           <input
             className="border"
             style={{
-              marginRight: '4px'
+              marginRight: '4px',
+              fontSize: '14px',
+              fontFamily: 'Open Sans'
             }}
             checked={acknowledge}
             onChange={e => {
-              // setAck(!ack)
-              let checkboxValue = !acknowledge
-              setAcknowledge(checkboxValue)
+              setAcknowledge(!acknowledge)
             }}
-
             type="checkbox" name="acknowledge" id="acknowledge" />
           <label
             className="smlabels"
@@ -203,14 +203,13 @@ const SendMessage = () => {
 
           <input
             style={{
-              marginRight: '4px'
+              marginRight: '4px',
+              fontSize: '14px',
+              fontFamily: 'Open Sans',
             }}
             checked={repeat}
             onChange={e => {
-              // console.log(repeat)
-              setRepeat(!repeat)
-              // let checkboxValue = !repeat
-              // setAck(checkboxValue)
+              enableRepeat(!repeat)
             }}
             className="border"
             type="checkbox" name="Repeat" id="Repeat" />
@@ -222,7 +221,7 @@ const SendMessage = () => {
       <div style={{
         display: 'grid',
         alignItems: 'center',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(299px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
         gridGap: '20px'
 
       }}>
@@ -235,22 +234,26 @@ const SendMessage = () => {
             className="labels"
             style={{
               // flex: '.2',
-              padding: '4px 20px 4px',
-              minWidth: '120px'
             }} htmlFor="numrepeat">Repeat</label>
           <select
             className="border"
 
             style={{
-              minWidth: '290px',
-              flex: '1'
+              flex: '1',
+              textIndent: '6px',
+              fontSize: '14px',
+              fontFamily: 'Open Sans'
             }}
-            defaultValue="Number of times "
+            defaultValue="default"
+            onChange={e => setRepeatNumber(e.target.value)}
             type="dropdown" id="numrepeat" name="numrepeat">
-            <option value="volvo">Volvo</option>
-            <option value="saab">Saab</option>
-            <option value="fiat">Fiat</option>
-            <option value="audi">Audi</option>
+            <option value="default" disabled>How many times</option>
+
+            {repeatlist?.map((repeatnum, idx) => {
+              return (
+                <option value={repeatnum.value} key={idx}>{repeatnum.name}</option>
+              )
+            })}
           </select>
 
         </div>
@@ -263,21 +266,25 @@ const SendMessage = () => {
           <label
             className="labels"
             style={{
-              padding: '4px 20px 4px',
-              minWidth: '120px'
             }} htmlFor="frequency">Frequency</label>
           <select
             className="border"
             style={{
-              minWidth: '290px',
-              flex: 1
+              flex: 1,
+              textIndent: '6px',
+              fontSize: '14px',
+              fontFamily: 'Open Sans',
             }}
-            defaultValue="Send message every..."
+            defaultValue="default"
+            onChange={e => setFreq(e.target.value)}
             type="dropdown" id="frequency" name="frequency">
-            <option value="volvo">Volvo</option>
-            <option value="saab">Saab</option>
-            <option value="fiat">Fiat</option>
-            <option value="audi">Audi</option>
+            <option value="default" disabled>How often</option>
+
+            {freqlist?.map((frequency, idx) => {
+              return (
+                <option value={frequency.value} key={idx}>{frequency.name}</option>
+              )
+            })}
           </select>
         </div>
       </div>
