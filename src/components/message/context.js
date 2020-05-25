@@ -2,7 +2,7 @@ import React, { createContext, useReducer, useState } from "react"
 import axios from "axios";
 
 
-const MessageContext = createContext();
+const MessageContext = createContext({});
 const MessageContextProvider = ({ children, token, }) => {
   // hardcoded should be dynamic, received by the /panel command
   let hostIP = 'http://localhost'
