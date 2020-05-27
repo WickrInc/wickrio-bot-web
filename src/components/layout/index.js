@@ -9,10 +9,13 @@ import React from "react"
 import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
 
-import Header from "./header"
+import Header from "../header"
 import "./layout.css"
+import { MessageContextProvider } from "../message/context"
 
-const Layout = ({ children }) => {
+const Layout = ({ children, location }) => {
+
+
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -22,9 +25,14 @@ const Layout = ({ children }) => {
       }
     }
   `)
+  let params = new URLSearchParams(location.search)
+  let token = params.get('token')
+
 
   return (
-    <>
+    <MessageContextProvider
+      token={token}
+    >
       <Header siteTitle={data.site.siteMetadata.title} />
       <div
         style={{
@@ -41,7 +49,7 @@ const Layout = ({ children }) => {
           <a href="https://www.wickr.com">Wickr</a>
         </footer>
       </div>
-    </>
+    </MessageContextProvider>
   )
 }
 

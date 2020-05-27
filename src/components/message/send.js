@@ -1,8 +1,8 @@
 import React, { useEffect, useContext } from "react"
 import { Link } from "gatsby"
-import Attach from "../attach"
-import Audio from "../audio"
+import Audio from "../images/audio"
 import { MessageContext } from "./context"
+import Attach from "../images/attach"
 
 let repeatlist = [{
   value: 2,
@@ -37,9 +37,9 @@ const SendMessage = () => {
   // run immediately & everytime state changes
 
   useEffect(() => {
-    sendAuthentication()
+    // sendAuthentication()
     // console.log({ user: user })
-    getSecGroups()
+    // getSecGroups()
   }, [])
 
   const buildFileSelector = () => {
