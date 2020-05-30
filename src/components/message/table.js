@@ -41,60 +41,65 @@ const SentMessages = () => {
             {sentBroadcasts && sentBroadcasts?.map((broadcast, idx) =>
               <tr key={idx}>
                 <td>
-                  <div style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                  }}>
-                    <p className="sentmessage">
-                      {broadcast.message}
-                    </p>
-                    <div>
-                      <p style={{
-                        fontSize: 12,
-                        fontFamily: 'Open Sans',
-                        letterSpacing: '0.41px',
-                        textAlign: 'right',
-                        color: 'var(--text-light)',
-                        lineHeight: 1.33
-                      }}>
-                        {new Date(broadcast.when_sent).toLocaleDateString()}
-                      </p>
+                  <Link style={{
+                    textDecoration: 'none'
+                  }} to={`/messages/${broadcast.message_id}`}>
 
+                    <div style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                    }}>
+                      <p className="sentmessage">
+                        {broadcast.message}
+                      </p>
+                      <div>
+                        <p style={{
+                          fontSize: 12,
+                          fontFamily: 'Open Sans',
+                          letterSpacing: '0.41px',
+                          textAlign: 'right',
+                          color: 'var(--text-light)',
+                          lineHeight: 1.33
+                        }}>
+                          {new Date(broadcast.when_sent).toLocaleDateString()}
+                        </p>
+
+                        <p style={{
+                          fontSize: 12,
+                          fontFamily: 'Open Sans',
+                          letterSpacing: '0.41px',
+                          textAlign: 'right',
+                          color: 'var(--text-light)',
+                          lineHeight: 1.33
+                        }}>
+                          {new Date(broadcast.when_sent).toLocaleTimeString()}
+                        </p>
+                      </div>
+                    </div>
+                    <div style={{
+                      display: 'flex'
+                    }}>
                       <p style={{
                         fontSize: 12,
                         fontFamily: 'Open Sans',
                         letterSpacing: '0.41px',
-                        textAlign: 'right',
                         color: 'var(--text-light)',
                         lineHeight: 1.33
-                      }}>
-                        {new Date(broadcast.when_sent).toLocaleTimeString()}
-                      </p>
+                      }}>{broadcast.target}(77 members)</p>
+                      <p style={{
+                        fontSize: 12,
+                        fontWeight: 600,
+                        fontFamily: 'Open Sans',
+                        color: '#0060ff',
+                        lineHeight: 1.33
+                      }}>Download</p>
                     </div>
-                  </div>
-                  <div style={{
-                    display: 'flex'
-                  }}>
-                    <p style={{
-                      fontSize: 12,
-                      fontFamily: 'Open Sans',
-                      letterSpacing: '0.41px',
-                      color: 'var(--text-light)',
-                      lineHeight: 1.33
-                    }}>{broadcast.target}(77 members)</p>
-                    <p style={{
-                      fontSize: 12,
-                      fontWeight: 600,
-                      fontFamily: 'Open Sans',
-                      color: '#0060ff',
-                      lineHeight: 1.33
-                    }}>Download</p>
-                  </div>
+                  </Link>
                 </td>
-                <td className="trow">r</td>
-                <td className="trow">p</td>
-                <td className="trow">f</td>
-                <td className="trow">a</td>
+                <td className="trow">{broadcast.summary.sent - broadcast.summary.failed}</td>
+                <td className="trow">{broadcast.summary.pending}</td>
+                <td className="trow">{broadcast.summary.failed}</td>
+                <td className="trow">{broadcast.summary.ack}</td>
               </tr>
             )}
           </tbody>

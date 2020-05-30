@@ -39,7 +39,7 @@ const SendMessage = () => {
   useEffect(() => {
     // sendAuthentication()
     // console.log({ user: user })
-    // getSecGroups()
+    getSecGroups()
   }, [])
 
   const buildFileSelector = () => {
@@ -237,7 +237,7 @@ const SendMessage = () => {
             }} htmlFor="numrepeat">Repeat</label>
           <select
             className="border"
-
+            disabled
             style={{
               flex: '1',
               textIndent: '6px',
@@ -269,6 +269,7 @@ const SendMessage = () => {
             }} htmlFor="frequency">Frequency</label>
           <select
             className="border"
+            disabled
             style={{
               flex: 1,
               textIndent: '6px',

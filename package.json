@@ -2,7 +2,7 @@
   "name": "broadcast-bot-web",
   "private": true,
   "description": "Broadcast Bot operation webapp",
-  "version": "0.1.0",
+  "version": "0.1.5",
   "author": "Alex Lane <alane@wickr.com>",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.28",

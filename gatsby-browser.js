@@ -7,7 +7,6 @@
 // You can delete this file if you're not using it
 import 'typeface-open-sans';
 import Layout from './src/components/layout';
-import { MessageContextProvider } from './src/components/message/context';
 import React from "react"
 
 
