@@ -19,6 +19,7 @@ let freqlist = [{
 const SendMessage = () => {
   const {
     user,
+    token,
     sendAuthentication,
     getSecGroups,
     setSelectedSecGroup,

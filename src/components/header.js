@@ -1,12 +1,18 @@
 import { Link } from "gatsby"
 import PropTypes from "prop-types"
-import React, { useContext } from "react"
+import React, { useContext, useEffect } from "react"
 import { MessageContext } from "./message/context"
 
 const Header = ({ siteTitle }) => {
   const {
-    user
+    user,
+    token
   } = useContext(MessageContext)
+
+  useEffect(() => {
+
+
+  })
 
   return (
     <header
@@ -26,7 +32,7 @@ const Header = ({ siteTitle }) => {
       >
         <h1 style={{ margin: 0 }}>
           <Link
-            to="/"
+            to={`/?token=${token}`}
             style={{
               color: `Black`,
               textDecoration: `none`,

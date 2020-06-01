@@ -3,7 +3,9 @@ import axios from "axios";
 
 
 const MessageContext = createContext({});
-const MessageContextProvider = ({ children, token, loation }) => {
+const MessageContextProvider = ({ children, location }) => {
+  let params = new URLSearchParams(location?.search)
+  let token = params.get('token')
   // hardcoded should be dynamic, received by the /panel command
   let hostIP = 'http://localhost'
   // hostIP = 'http://9ad6fbb1.ngrok.io'
@@ -136,7 +138,7 @@ const MessageContextProvider = ({ children, token, loation }) => {
   return (
     <MessageContext.Provider value={{
       user,
-      // loation,
+      token,
       sendAuthentication,
       getSecGroups,
       selectedSecGroup,

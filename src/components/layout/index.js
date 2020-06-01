@@ -25,14 +25,10 @@ const Layout = ({ children, location }) => {
       }
     }
   `)
-  let params = new URLSearchParams(location?.search)
-  let token = params.get('token')
-
 
   return (
     <MessageContextProvider
-      token={token}
-    // location={location}
+      location={location}
     >
       <Header siteTitle={data.site.siteMetadata.title} />
       <div

@@ -3,7 +3,7 @@ import { Link } from "gatsby"
 import { MessageContext } from "./context"
 
 const SentMessages = () => {
-  const { sendStatus, sentBroadcasts } = useContext(MessageContext)
+  const { sendStatus, sentBroadcasts, token } = useContext(MessageContext)
   // being reloaded twice on initial render
   // and after every change in send component
   // console.log(sentBroadcasts)
@@ -43,7 +43,7 @@ const SentMessages = () => {
                 <td>
                   <Link style={{
                     textDecoration: 'none'
-                  }} to={`/messages/${broadcast.message_id}`}>
+                  }} to={`/messages/${broadcast.message_id}/?token=${token}`}>
 
                     <div style={{
                       display: 'flex',
