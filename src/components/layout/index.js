@@ -11,7 +11,7 @@ import { useStaticQuery, graphql } from "gatsby"
 
 import Header from "../header"
 import "./layout.css"
-import { MessageContextProvider } from "../message/context"
+import { MessageContextProvider } from "../context"
 
 const Layout = ({ children, location }) => {
 

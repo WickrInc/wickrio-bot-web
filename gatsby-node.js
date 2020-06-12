@@ -12,8 +12,6 @@ const path = require('path')
 
 exports.onCreatePage = async ({ page, actions }) => {
   const { createPage } = actions
-  console.log(page)
-
   // Only update the `/app` page.
   if (page.path.match(/^\/messages/)) {
     // page.matchPath is a special key that's used for matching pages

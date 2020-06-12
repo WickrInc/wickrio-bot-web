@@ -1,24 +1,25 @@
 import { Link } from "gatsby"
 import PropTypes from "prop-types"
 import React, { useContext, useEffect } from "react"
-import { MessageContext } from "./message/context"
+import { MessageContext } from "./context"
 
 const Header = ({ siteTitle }) => {
   const {
     user,
-    token
+    token,
+    sendAuthentication
   } = useContext(MessageContext)
 
   useEffect(() => {
+    sendAuthentication()
 
-
-  })
+  }, [])
 
   return (
     <header
       style={{
         // background: `rebeccapurple`,
-        marginBottom: `1.45rem`,
+        // marginBottom: `1.45rem`,
       }}
     >
       <nav
@@ -43,7 +44,7 @@ const Header = ({ siteTitle }) => {
         </h1>
         {/* dropdown for account options */}
         <h3>
-          {user?.email
+          {user?.data?.email
             || 'Unauthenticated'}
         </h3>
       </nav>

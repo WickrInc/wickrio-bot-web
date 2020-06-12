@@ -9,11 +9,13 @@ const MessageContextProvider = ({ children, location }) => {
   // hardcoded should be dynamic, received by the /panel command
   let hostIP = 'http://localhost'
   // hostIP = 'http://9ad6fbb1.ngrok.io'
-  const botPort = '4545'
-  const botAPIKey = "12345" // where do i get this from? cannot 
+  // const botAPIKey = "12345" // where do i get this from? cannot 
   // const baseAPIurl = `${hostIP}:${botPort}/WickrIO/V1/Apps/${botAPIKey}`
   // get decoded api key from authorization endpoint
-  const baseAPIurl = `${hostIP}:${botPort}/WickrIO/V1/Apps/${botAPIKey}`
+
+  // base api url for dev ports
+  const baseAPIurl = `${hostIP}:${location.port == 8000 ? 4545 : location.port}/WickrIO/V2/Apps/Web/Broadcast`
+  // const baseAPIurl = `${hostIP}:${location.port}/WickrIO/V1/Apps/Web/Broadcast`
 
 
   // change to use usereducer
@@ -22,6 +24,8 @@ const MessageContextProvider = ({ children, location }) => {
   })
   const [secGroups, setSecGroups] = useState([])
   const [sentBroadcasts, setSentBroadcasts] = useState([])
+  const [broadcastSummary, setBroadcastSummary] = useState({})
+  const [report, setReport] = useState({})
   const [message, setMessage] = useState("")
   const [acknowledge, setAcknowledge] = useState(false)
   const [repeat, enableRepeat] = useState(false)
@@ -42,8 +46,6 @@ const MessageContextProvider = ({ children, location }) => {
       })
       // return false or a key to authorize the user
       // localStorage.setItem('token', user?.token)
-      console.log(response.data)
-
       setUser(response.data)
     }
     catch (err) {
@@ -60,6 +62,7 @@ const MessageContextProvider = ({ children, location }) => {
           'Authorization': `Basic ${token}`
         }
       })
+      // console.log(response.data)
       setSecGroups(response.data)
 
     }
@@ -69,9 +72,9 @@ const MessageContextProvider = ({ children, location }) => {
   }
 
   const sendBroadcast = async () => {
-    console.log({ message, acknowledge, repeat, selectedSecGroup, freq, repeatNum })
+    console.log({ message, acknowledge, repeat, selectedSecGroup, freq, repeatNum, attachment })
     if (!message) return console.log("need a message")
-    const broadcastpath = encodeURI(`${baseAPIurl}/Broadcast`)
+    const broadcastpath = encodeURI(`${baseAPIurl}/Message`)
 
     const formdata = new FormData()
     formdata.append('message', message)
@@ -94,22 +97,37 @@ const MessageContextProvider = ({ children, location }) => {
           'Authorization': `Basic ${token}`
         }
       })
+      console.log({ response })
       if (sentBroadcasts.map) {
         setSentBroadcasts([{
-          'message_id': 'hardcoded, needs response from api',
-          'message': message,
+          message_id: response.data.data.message_id,
+          message: response.data.data.message,
           // 'sender': username,
-          'target': 'target',
-          'when_sent': new Date().toLocaleString()
+          summary: {
+            pending: 0,
+            ack: 0,
+            sent: 0,
+            failed: 0,
+            read: 0
+          },
+          target: response.data.data.securityGroups,
+          when_sent: new Date().toLocaleString()
         }, ...sentBroadcasts,
         ])
       } else {
         setSentBroadcasts([{
-          'message_id': 'hardcoded, needs response from api',
-          'message': message,
+          message_id: response.data.data.message_id,
+          message: response.data.data.message,
           // 'sender': username,
-          'target': 'target',
-          'when_sent': new Date().toLocaleString()
+          summary: {
+            pending: 0,
+            ack: 0,
+            sent: 0,
+            failed: 0,
+            read: 0
+          },
+          target: response.data.data.securityGroups,
+          when_sent: new Date().toLocaleString()
         }])
       }
 
@@ -120,15 +138,46 @@ const MessageContextProvider = ({ children, location }) => {
   }
 
   // cache results to prevent needless requests from reloading or revisiting a page and having zero updates
-  const sendStatus = async () => {
-    const statuspath = encodeURI(`${baseAPIurl}/Status`)
+  const sendStatus = async (page, size) => {
+    const statuspath = encodeURI(`${baseAPIurl}/Status/${page}/${size}`)
     try {
       const response = await axios.get(statuspath, {
         headers: {
           Authorization: `Basic ${token}`
         }
       })
+      // console.log({ response })
       setSentBroadcasts(response.data.data)
+    }
+    catch (err) {
+      console.log(err)
+    }
+  }
+  const sendBroadcastSummary = async () => {
+    const statuspath = encodeURI(`${baseAPIurl}/Status/`)
+    try {
+      const response = await axios.get(statuspath, {
+        headers: {
+          Authorization: `Basic ${token}`
+        }
+      })
+      // console.log(response.data)
+      setBroadcastSummary(response.data.data)
+    }
+    catch (err) {
+      console.log(err)
+    }
+  }
+
+  const sendReportStatus = async (messageID, page, size) => {
+    const reportpath = encodeURI(`${baseAPIurl}/Report/${messageID}/${page}/${size}`)
+    try {
+      const response = await axios.get(reportpath, {
+        headers: {
+          Authorization: `Basic ${token}`
+        }
+      })
+      setReport({ messageID: messageID, broadcast: response.data })
     }
     catch (err) {
       console.log(err)
@@ -139,10 +188,13 @@ const MessageContextProvider = ({ children, location }) => {
     <MessageContext.Provider value={{
       user,
       token,
+      report,
       sendAuthentication,
       getSecGroups,
       selectedSecGroup,
       setSelectedSecGroup,
+      sendBroadcastSummary,
+      broadcastSummary,
       sendBroadcast,
       sendStatus,
       sentBroadcasts,
@@ -151,6 +203,7 @@ const MessageContextProvider = ({ children, location }) => {
       message,
       acknowledge,
       setAcknowledge,
+      sendReportStatus,
       repeat,
       enableRepeat,
       repeatNum,

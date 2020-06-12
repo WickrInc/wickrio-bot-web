@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from "react"
 import { Link } from "gatsby"
 import Audio from "../images/audio"
-import { MessageContext } from "./context"
+import { MessageContext } from "../context"
 import Attach from "../images/attach"
 
 let repeatlist = [{
@@ -36,6 +36,8 @@ const SendMessage = () => {
     setAttachment
   } = useContext(MessageContext)
   // run immediately & everytime state changes
+
+  console.log({ secGroups })
 
   useEffect(() => {
     // sendAuthentication()
@@ -110,13 +112,14 @@ const SendMessage = () => {
           }}
           type="dropdown" id="secgroup" name="secgroup"
         >
-          <option value="default" disabled>Select Security Group</option>
-          <option value='false'>Whole network</option>
-          {secGroups?.map((secgroup, idx) => {
+          <option value="default" disabled>{secGroups.length > 1 ? 'Select Security Groups' : 'Getting Security Groups'}</option>
+          <option value='NETWORK'>Whole network</option>
+          {secGroups && secGroups?.map((secgroup, idx) => {
             return (
               <option value={secgroup.id} key={idx}>{secgroup.name}</option>
             )
-          })}
+          })
+          }
         </select>
       </div>
       <div style={{
@@ -208,6 +211,7 @@ const SendMessage = () => {
               fontSize: '14px',
               fontFamily: 'Open Sans',
             }}
+            disabled
             checked={repeat}
             onChange={e => {
               enableRepeat(!repeat)
@@ -290,6 +294,7 @@ const SendMessage = () => {
           </select>
         </div>
       </div>
+
     </form >
   )
 }
