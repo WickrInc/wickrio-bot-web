@@ -6,17 +6,10 @@ const MessageContext = createContext({});
 const MessageContextProvider = ({ children, location }) => {
   let params = new URLSearchParams(location?.search)
   let token = params.get('token')
-  // hardcoded should be dynamic, received by the /panel command
-  let hostIP = 'http://localhost'
-  // hostIP = 'http://9ad6fbb1.ngrok.io'
-  // const botAPIKey = "12345" // where do i get this from? cannot 
-  // const baseAPIurl = `${hostIP}:${botPort}/WickrIO/V1/Apps/${botAPIKey}`
+
   // get decoded api key from authorization endpoint
-
-  // base api url for dev ports
-  const baseAPIurl = `${hostIP}:${location.port == 8000 ? 4545 : location.port}/WickrIO/V2/Apps/Web/Broadcast`
-  // const baseAPIurl = `${hostIP}:${location.port}/WickrIO/V1/Apps/Web/Broadcast`
-
+  let baseAPIurl = `${location.protocol}//${location.hostname}:${location.port}/WickrIO/V2/Apps/Web/Broadcast`
+  console.log(baseAPIurl)
 
   // change to use usereducer
   const [user, setUser] = useState({
@@ -97,7 +90,6 @@ const MessageContextProvider = ({ children, location }) => {
           'Authorization': `Basic ${token}`
         }
       })
-      console.log({ response })
       if (sentBroadcasts.map) {
         setSentBroadcasts([{
           message_id: response.data.data.message_id,
@@ -146,8 +138,8 @@ const MessageContextProvider = ({ children, location }) => {
           Authorization: `Basic ${token}`
         }
       })
-      // console.log({ response })
-      setSentBroadcasts(response.data.data)
+      console.log({ response })
+      setSentBroadcasts(response.data.list)
     }
     catch (err) {
       console.log(err)
