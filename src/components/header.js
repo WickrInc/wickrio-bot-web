@@ -7,11 +7,11 @@ const Header = ({ siteTitle }) => {
   const {
     user,
     token,
-    sendAuthentication
+    sendAuthorization
   } = useContext(MessageContext)
 
   useEffect(() => {
-    sendAuthentication()
+    sendAuthorization()
 
   }, [])
 
@@ -44,7 +44,7 @@ const Header = ({ siteTitle }) => {
         </h1>
         {/* dropdown for account options */}
         <h3>
-          {user?.data?.email
+          {user?.email
             || 'Unauthenticated'}
         </h3>
       </nav>

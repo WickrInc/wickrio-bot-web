@@ -8,12 +8,10 @@ const MessageContextProvider = ({ children, location }) => {
   let token = params.get('token')
 
   // get decoded api key from authorization endpoint
-  let baseAPIurl = `${location.protocol}//${location.hostname}:${location.port}/WickrIO/V2/Apps/Web/Broadcast`
-  console.log(baseAPIurl)
-
+  let baseAPIurl = `${location.protocol}//${location.hostname}:${location.hostname == 'localhost' ? 4545 : location.port}/WickrIO/V2/Apps/Web/Broadcast`
+  // let baseAPIurl = `${location.protocol}//${location.hostname}:${location.port}/WickrIO/V2/Apps/Web/Broadcast`
   // change to use usereducer
   const [user, setUser] = useState({
-
   })
   const [secGroups, setSecGroups] = useState([])
   const [sentBroadcasts, setSentBroadcasts] = useState([])
@@ -28,9 +26,9 @@ const MessageContextProvider = ({ children, location }) => {
   const [selectedSecGroup, setSelectedSecGroup] = useState(false)
 
   // recieve token via search params, send as authorization header
-  const sendAuthentication = async () => {
+  const sendAuthorization = async () => {
     // const authpath = encodeURI(`${baseAPIurl}/Authenticate/${username}`)
-    const authpath = encodeURI(`${baseAPIurl}/Authenticate`)
+    const authpath = encodeURI(`${baseAPIurl}/Authorize`)
     try {
       const response = await axios.get(authpath, {
         headers: {
@@ -39,7 +37,8 @@ const MessageContextProvider = ({ children, location }) => {
       })
       // return false or a key to authorize the user
       // localStorage.setItem('token', user?.token)
-      setUser(response.data)
+      // console.log({ response })
+      setUser(response.data.data)
     }
     catch (err) {
       console.log(err)
@@ -90,43 +89,47 @@ const MessageContextProvider = ({ children, location }) => {
           'Authorization': `Basic ${token}`
         }
       })
-      if (sentBroadcasts.map) {
-        setSentBroadcasts([{
-          message_id: response.data.data.message_id,
-          message: response.data.data.message,
-          // 'sender': username,
-          summary: {
-            pending: 0,
-            ack: 0,
-            sent: 0,
-            failed: 0,
-            read: 0
-          },
-          target: response.data.data.securityGroups,
-          when_sent: new Date().toLocaleString()
-        }, ...sentBroadcasts,
-        ])
-      } else {
-        setSentBroadcasts([{
-          message_id: response.data.data.message_id,
-          message: response.data.data.message,
-          // 'sender': username,
-          summary: {
-            pending: 0,
-            ack: 0,
-            sent: 0,
-            failed: 0,
-            read: 0
-          },
-          target: response.data.data.securityGroups,
-          when_sent: new Date().toLocaleString()
-        }])
+      console.log({ response })
+      if (response.data.data.message) {
+        if (sentBroadcasts.map) {
+          setSentBroadcasts([{
+            message_id: response.data.data.message_id,
+            message: response.data.data.message,
+            // 'sender': username,
+            summary: {
+              pending: 0,
+              ack: 0,
+              sent: 0,
+              failed: 0,
+              read: 0
+            },
+            target: response.data.data.securityGroups,
+            when_sent: new Date().toLocaleString()
+          }, ...sentBroadcasts,
+          ])
+        } else {
+          setSentBroadcasts([{
+            message_id: response.data.data.message_id,
+            message: response.data.data.message,
+            // 'sender': username,
+            summary: {
+              pending: 0,
+              ack: 0,
+              sent: 0,
+              failed: 0,
+              read: 0
+            },
+            target: response.data.data.securityGroups,
+            when_sent: new Date().toLocaleString()
+          }])
+        }
       }
-
     }
     catch (err) {
       console.log(err)
+      return err
     }
+
   }
 
   // cache results to prevent needless requests from reloading or revisiting a page and having zero updates
@@ -181,7 +184,7 @@ const MessageContextProvider = ({ children, location }) => {
       user,
       token,
       report,
-      sendAuthentication,
+      sendAuthorization,
       getSecGroups,
       selectedSecGroup,
       setSelectedSecGroup,

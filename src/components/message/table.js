@@ -3,7 +3,7 @@ import { Link } from "gatsby"
 import { MessageContext } from "../context"
 
 const SentMessages = () => {
-  const { sendStatus, sentBroadcasts, sendBroadcastSummary, broadcastSummary, token } = useContext(MessageContext)
+  const { sendStatus, sentBroadcasts, sendBroadcastSummary, broadcastSummary, token, secGroups } = useContext(MessageContext)
   // being reloaded twice on initial render
   // and after every change in send component
   // console.log(sentBroadcasts)
@@ -111,7 +111,7 @@ const SentMessages = () => {
                             letterSpacing: '0.41px',
                             color: 'var(--text-light)',
                             lineHeight: 1.33
-                          }}>{broadcast.target}(77 members)</p>
+                          }}>{secGroups.find(group => group.id === broadcast.target)?.name || 'network'}(x members)</p>
                           <p style={{
                             fontSize: 12,
                             fontWeight: 600,
