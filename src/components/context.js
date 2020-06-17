@@ -38,7 +38,7 @@ const MessageContextProvider = ({ children, location }) => {
       // return false or a key to authorize the user
       // localStorage.setItem('token', user?.token)
       // console.log({ response })
-      setUser(response.data.data)
+      setUser(response.data.user)
     }
     catch (err) {
       console.log(err)
