@@ -3,7 +3,7 @@ import { Link } from "gatsby"
 import { MessageContext } from "../context"
 
 const Report = ({ id }) => {
-  const { report, secGroups, sendReportStatus } = useContext(MessageContext)
+  const { report, secGroups, sendReportStatus, downloadReport } = useContext(MessageContext)
   const [page, setPage] = useState(0)
   const [size, setSize] = useState(25)
 
@@ -33,6 +33,7 @@ const Report = ({ id }) => {
     }
   }
 
+
   return (
     <>
       {report.broadcast ?
@@ -60,7 +61,7 @@ const Report = ({ id }) => {
               </h2>
               <p className="summary"
                 style={{ margin: 0 }}>
-                received
+                recieved
               </p>
             </div>
             <div style={{
@@ -103,9 +104,9 @@ const Report = ({ id }) => {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignContent: 'center', alignItems: 'center' }}>
             <div>
               <h2 className="report-table-title">Report</h2>
-              <p className="subtitle-report">Lorem Ipsum</p>
+              {/* <p className="subtitle-report">Lorem Ipsum</p> */}
             </div>
-            <button className="downloadButton">Download</button>
+            <button className="downloadButton" onClick={() => downloadReport(report.broadcast.message_id, 0, 25)}>Download</button>
           </div>
           <section
             className="sentsection"
@@ -131,6 +132,9 @@ const Report = ({ id }) => {
                   else if (user.status == 2) { user.status = "failed" }
                   else if (user.status == 3) { user.status = "ack" }
                   else if (user.status == 4) { user.status = "ignored" }
+                  else if (user.status == 5) { user.status = "aborted" }
+                  else if (user.status == 6) { user.status = "read" }
+                  else if (user.status == 7) { user.status = "delivered" }
 
                   return (
                     <tr key={idx}>

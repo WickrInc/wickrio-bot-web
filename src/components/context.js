@@ -41,6 +41,7 @@ const MessageContextProvider = ({ children, location }) => {
       setUser(response.data.user)
     }
     catch (err) {
+      alert('Access denied: invalid user authentication code.')
       console.log(err)
     }
   }
@@ -59,6 +60,7 @@ const MessageContextProvider = ({ children, location }) => {
 
     }
     catch (err) {
+      alert('Your token expired! run /panel again.')
       console.log(err)
     }
   }
@@ -126,10 +128,35 @@ const MessageContextProvider = ({ children, location }) => {
       }
     }
     catch (err) {
+      alert('Your token expired! run /panel again.')
       console.log(err)
       return err
     }
 
+  }
+  const downloadReport = async (id, page, size) => {
+    const statuspath = encodeURI(`${baseAPIurl}/Report/${id}/${page}/${size}`)
+    try {
+      const response = await axios.get(statuspath, {
+        responseType: 'arraybuffer',
+        headers: {
+          Authorization: `Basic ${token}`
+        }
+      })
+      console.log(response.data)
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'report.json'); //or any other extension
+      document.body.appendChild(link);
+      link.click();
+
+    }
+    catch (err) {
+      alert('Your token expired! run /panel again.')
+      console.log(err)
+    }
   }
 
   // cache results to prevent needless requests from reloading or revisiting a page and having zero updates
@@ -145,9 +172,12 @@ const MessageContextProvider = ({ children, location }) => {
       setSentBroadcasts(response.data.list)
     }
     catch (err) {
+      alert('Your token expired! run /panel again.')
       console.log(err)
     }
   }
+
+
   const sendBroadcastSummary = async () => {
     const statuspath = encodeURI(`${baseAPIurl}/Status/`)
     try {
@@ -160,6 +190,7 @@ const MessageContextProvider = ({ children, location }) => {
       setBroadcastSummary(response.data.data)
     }
     catch (err) {
+      alert('Your token expired! run /panel again.')
       console.log(err)
     }
   }
@@ -175,6 +206,7 @@ const MessageContextProvider = ({ children, location }) => {
       setReport({ messageID: messageID, broadcast: response.data })
     }
     catch (err) {
+      alert('Your token expired! run /panel again.')
       console.log(err)
     }
   }
@@ -183,6 +215,7 @@ const MessageContextProvider = ({ children, location }) => {
     <MessageContext.Provider value={{
       user,
       token,
+      downloadReport,
       report,
       sendAuthorization,
       getSecGroups,

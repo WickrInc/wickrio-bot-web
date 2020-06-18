@@ -2,8 +2,9 @@ import React, { useEffect, useContext } from "react"
 import { Link } from "gatsby"
 import Audio from "../images/audio"
 import { MessageContext } from "../context"
-import Attach from "../images/attach"
-
+// import Attach from "../images/attach"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPaperclip, faMicrophone, faMapMarkerAlt, faTimes } from '@fortawesome/free-solid-svg-icons'
 let repeatlist = [{
   value: 2,
   name: '2 times'
@@ -21,6 +22,7 @@ const SendMessage = () => {
     user,
     token,
     sendAuthentication,
+    attachment,
     getSecGroups,
     setSelectedSecGroup,
     secGroups,
@@ -36,8 +38,6 @@ const SendMessage = () => {
     setAttachment
   } = useContext(MessageContext)
   // run immediately & everytime state changes
-
-  console.log({ secGroups })
 
   useEffect(() => {
     // sendAuthentication()
@@ -95,32 +95,40 @@ const SendMessage = () => {
             // padding: '4px 20px 4px',
             // minWidth: '120px'
           }}
-          htmlFor="secgroup">Send To</label>
-        <select
-          id='secgroup'
-          className="border"
+          htmlFor="secgroup">Send To
+          </label>
+        <label
+          className="inner"
           style={{
             flex: 1,
             minWidth: '284px',
-            fontFamily: 'Open Sans',
-            fontSize: '14px',
-            textIndent: '6px'
-          }}
-          defaultValue="default"
-          onChange={e => {
-            setSelectedSecGroup(e.target.value)
-          }}
-          type="dropdown" id="secgroup" name="secgroup"
-        >
-          <option value="default" disabled>{secGroups.length > 1 ? 'Select Security Groups' : 'Getting Security Groups'}</option>
-          <option value='NETWORK'>Whole network</option>
-          {secGroups && secGroups?.map((secgroup, idx) => {
-            return (
-              <option value={secgroup.id} key={idx}>{secgroup.name}</option>
-            )
-          })
-          }
-        </select>
+          }}>
+
+          <select
+            id='secgroup'
+            className="border"
+            style={{
+              width: '100%',
+              fontFamily: 'Open Sans',
+              fontSize: '14px',
+              textIndent: '6px'
+            }}
+            defaultValue="default"
+            onChange={e => {
+              setSelectedSecGroup(e.target.value)
+            }}
+            type="dropdown" id="secgroup" name="secgroup"
+          >
+            <option value="default" disabled>{secGroups.length > 1 ? 'Select Security Groups' : 'Getting Security Groups'}</option>
+            <option value='NETWORK'>Whole network</option>
+            {secGroups && secGroups?.map((secgroup, idx) => {
+              return (
+                <option value={secgroup.id} key={idx}>{secgroup.name}</option>
+              )
+            })
+            }
+          </select>
+        </label>
       </div>
       <div style={{
         display: 'flex',
@@ -157,24 +165,34 @@ const SendMessage = () => {
           right: '10px',
           bottom: '10px'
         }}>
-          <div
-            style={{ width: `24px` }}
-            onClick={() => {
-              const file = document.getElementById('file')
-              console.log(file)
-            }}>
-            <Audio />
-          </div>
-          <div style={{ width: `24px` }}
-            onClick={
-              // () => {
-              // console.log('hello')
-              buildFileSelector
+          {attachment && <div style={{ backgroundColor: '#333', width: '40px', height: "40px" }}>
+            <FontAwesomeIcon icon={faTimes} onClick={() => {
+              setAttachment(null)
+            }} />
+          </div>}
+          <FontAwesomeIcon
+            icon={faMicrophone}
+            style={{
+              color: '#333',
+              cursor: 'pointer'
+            }} />
+          <FontAwesomeIcon
+            icon={faMapMarkerAlt}
+            style={{
+              color: '#333',
+              cursor: 'pointer',
+              margin: '0 10px'
+            }} />
+
+          <FontAwesomeIcon
+            icon={faPaperclip}
+            onClick={() => buildFileSelector()
               // setAttachment()
-              // }
-            }>
-            <Attach />
-          </div>
+            }
+            style={{
+              color: '#333',
+              cursor: 'pointer',
+            }} />
         </div>
       </div>
       <div

@@ -17,6 +17,33 @@ select {
 min-width: 284px;
 
 }
+.Rectangle {
+  width: 40px;
+  height: 36px;
+  border-radius: 5px;
+  border: solid 1px #e6e6e6;
+  background-color: #e6e6e6;
+  display: flex;
+    justify-content: center;
+    cursor: pointer;
+}
+/* label.inner::after {
+  content:"\f0d7";   
+  flex: 1;
+  font-family: "Font Awesome 5 Free";
+  font-size: 11px;
+  color:#aaa;
+  right:8px; top:4px;
+  padding:0 0 2px;
+  position:absolute;
+  pointer-events:none;
+}
+
+select  {
+  -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+} */
 
 :root {
 --dark: #000000;
@@ -147,6 +174,7 @@ font-family: 'Open Sans';
 font-size: 14px;
 font-weight: 600;
 font-stretch: normal;
+cursor: pointer;
 font-style: normal;
 line-height: 1.14;
 border-radius: 4px;
@@ -169,6 +197,7 @@ line-height: 1.14;
 border-radius: 4px;
 color: var(--dark);
 line-height: 1.14;
+cursor: pointer;
 letter-spacing: 1.28px;
 text-align: center;
 background-color: var(--bg-light);

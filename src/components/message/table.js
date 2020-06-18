@@ -3,11 +3,11 @@ import { Link } from "gatsby"
 import { MessageContext } from "../context"
 
 const SentMessages = () => {
-  const { sendStatus, sentBroadcasts, sendBroadcastSummary, broadcastSummary, token, secGroups } = useContext(MessageContext)
+  const { sendStatus, sentBroadcasts, downloadReport, token, secGroups } = useContext(MessageContext)
   // being reloaded twice on initial render
   // and after every change in send component
   // console.log(sentBroadcasts)
-  const [page, setPage] = useState(0)
+  const [page, setPage] = useState(1)
   const [size, setSize] = useState(25)
 
   useEffect(() => {
@@ -23,13 +23,15 @@ const SentMessages = () => {
   }
 
   const getLastReportPage = (page, size) => {
-    if (page !== 0) {
+    console.log({ page })
+    if (page !== 1) {
       setPage(page - 1)
+      sendStatus(page, size)
+
       // console.log({ newpage: page - 1 })
       // sendStatus(page, size)
     }
   }
-  console.log(sentBroadcasts)
   // console.log({ broadcastSummary })
 
 
@@ -60,67 +62,69 @@ const SentMessages = () => {
               </tr>
             </thead>
             <tbody>
-              {sentBroadcasts[0] && sentBroadcasts?.map((broadcast, idx) => {
-                console.log(broadcast)
+              {sentBroadcasts[0] && sentBroadcasts.slice(0, 24)?.map((broadcast, idx) => {
                 return (
-
                   <tr key={idx}>
                     <td>
-                      <Link style={{
-                        textDecoration: 'none'
-                      }} to={`/messages/${broadcast.message_id}/?token=${token}`}>
 
-                        <div style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                        }}>
+                      <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                      }}>
+                        <Link style={{
+                          textDecoration: 'none'
+                        }} to={`/messages/${broadcast.message_id}/?token=${token}`}>
+
                           <p className="sentmessage">
                             {broadcast.message}
                           </p>
+                        </Link>
 
-                          <div>
-                            <p style={{
-                              fontSize: 12,
-                              fontFamily: 'Open Sans',
-                              letterSpacing: '0.41px',
-                              textAlign: 'right',
-                              color: 'var(--text-light)',
-                              lineHeight: 1.33
-                            }}>
-                              {new Date(broadcast.when_sent).toLocaleDateString()}
-                            </p>
-
-                            <p style={{
-                              fontSize: 12,
-                              fontFamily: 'Open Sans',
-                              letterSpacing: '0.41px',
-                              textAlign: 'right',
-                              color: 'var(--text-light)',
-                              lineHeight: 1.33
-                            }}>
-                              {new Date(broadcast.when_sent).toLocaleTimeString()}
-                            </p>
-                          </div>
-                        </div>
-                        <div style={{
-                          display: 'flex'
-                        }}>
+                        <div>
                           <p style={{
                             fontSize: 12,
                             fontFamily: 'Open Sans',
                             letterSpacing: '0.41px',
+                            textAlign: 'right',
                             color: 'var(--text-light)',
                             lineHeight: 1.33
-                          }}>{secGroups.find(group => group.id === broadcast.target)?.name || 'network'}(x members)</p>
+                          }}>
+                            {new Date(broadcast.when_sent).toLocaleDateString()}
+                          </p>
+
                           <p style={{
+                            fontSize: 12,
+                            fontFamily: 'Open Sans',
+                            letterSpacing: '0.41px',
+                            textAlign: 'right',
+                            color: 'var(--text-light)',
+                            lineHeight: 1.33
+                          }}>
+                            {new Date(broadcast.when_sent).toLocaleTimeString()}
+                          </p>
+                        </div>
+                      </div>
+                      <div style={{
+                        display: 'flex'
+                      }}>
+                        <p style={{
+                          fontSize: 12,
+                          fontFamily: 'Open Sans',
+                          letterSpacing: '0.41px',
+                          color: 'var(--text-light)',
+                          lineHeight: 1.33
+                        }}>{secGroups.find(group => group.id === broadcast.target)?.name || 'network'}(x members)</p>
+                        <p
+                          onClick={() => downloadReport(broadcast.message_id, 0, 25)}
+                          style={{
+                            cursor: 'pointer',
                             fontSize: 12,
                             fontWeight: 600,
                             fontFamily: 'Open Sans',
                             color: '#0060ff',
                             lineHeight: 1.33
                           }}>Download</p>
-                        </div>
-                      </Link>
+                      </div>
                     </td>
                     <td className="trow">{Math.max(0, broadcast.summary.sent - broadcast.summary.failed)}</td>
                     <td className="trow">{broadcast.summary.pending}</td>
