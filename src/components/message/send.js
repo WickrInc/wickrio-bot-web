@@ -165,11 +165,23 @@ const SendMessage = () => {
           right: '10px',
           bottom: '10px'
         }}>
-          {attachment && <div style={{ backgroundColor: '#333', width: '40px', height: "40px" }}>
-            <FontAwesomeIcon icon={faTimes} onClick={() => {
-              setAttachment(null)
-            }} />
-          </div>}
+          {attachment && <>
+            <p style={{
+              fontFamily: 'Open Sans',
+              fontSize: '14px',
+              lineHeight: '18px'
+            }}>{attachment.name}</p>
+            <FontAwesomeIcon
+              style={{
+                margin: '0 20px 0 0'
+              }}
+              icon={faTimes}
+              onClick={() => {
+                setAttachment(null)
+
+              }} />
+          </>
+          }
           <FontAwesomeIcon
             icon={faMicrophone}
             style={{

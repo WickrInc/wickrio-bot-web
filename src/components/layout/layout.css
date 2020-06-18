@@ -26,6 +26,7 @@ min-width: 284px;
   display: flex;
     justify-content: center;
     cursor: pointer;
+    margin: 0 20px;
 }
 /* label.inner::after {
   content:"\f0d7";   
