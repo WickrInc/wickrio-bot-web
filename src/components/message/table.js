@@ -1,38 +1,45 @@
 import React, { useState, useContext, useEffect } from "react"
 import { Link } from "gatsby"
 import { MessageContext } from "../context"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChevronLeft, faChevronDown, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 
 const SentMessages = () => {
   const { sendStatus, sentBroadcasts, downloadReport, token, secGroups } = useContext(MessageContext)
   // being reloaded twice on initial render
   // and after every change in send component
   // console.log(sentBroadcasts)
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(0)
   const [size, setSize] = useState(25)
-
   useEffect(() => {
     sendStatus(0, 25)
     // sendBroadcastSummary()
   }, [])
 
   const getNextReportPage = (page, size) => {
-    setPage(page + 1)
     console.log({ newpage: page })
 
-    sendStatus(page, size)
+    sendStatus(page + 1, size)
+    setPage(page + 1)
   }
 
   const getLastReportPage = (page, size) => {
     console.log({ page })
-    if (page !== 1) {
+    if (page !== 0) {
+      sendStatus(page - 1, size)
       setPage(page - 1)
-      sendStatus(page, size)
 
       // console.log({ newpage: page - 1 })
       // sendStatus(page, size)
     }
   }
-  // console.log({ broadcastSummary })
+  console.log({ sentBroadcasts })
+  let from = page == 0 ?
+    (sentBroadcasts.list.length - (sentBroadcasts.list.length - 1)) * page + 1 :
+    size * (sentBroadcasts.list.length - (sentBroadcasts.list.length - 1)) + 1
+
+
+  let to = sentBroadcasts.list.length * (page + 1)
 
 
   return (
@@ -60,10 +67,10 @@ const SentMessages = () => {
               <th className="tlabel">Sent</th>
             </tr>
           </thead>
-          {sentBroadcasts[0] &&
+          {sentBroadcasts.list[0] &&
             <tbody>
-              {sentBroadcasts[0] && sentBroadcasts.slice(0, 24)?.map((broadcast, idx) => {
-                console.log({ broadcast })
+              {sentBroadcasts.list[0] && sentBroadcasts.list.slice(0, 24)?.map((broadcast, idx) => {
+                // console.log({ broadcast })
                 return (
                   <tr key={idx}>
                     <td>
@@ -149,24 +156,48 @@ const SentMessages = () => {
           </p>}
 
 
-        {sentBroadcasts.length > 1 &&
-          <>
-            <p
-              onClick={() => getLastReportPage(page, size)}
-            >
-              {'<'}
-            </p>
-            <p>{(page == 0 ? 1 : page) * size - 24}-{Math.min(sentBroadcasts.length, (page == 0 ? 1 : page) * size)} of {Math.min(sentBroadcasts.length, (page == 0 ? 1 : page) * size)}</p>
-            <p
-              onClick={() => {
-                if (sentBroadcasts.length == ((page == 0 ? 1 : page) * size)) {
-                  return getNextReportPage(page, size)
-                }
+        {sentBroadcasts.list.length > 0 &&
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            margin: '24px 32px'
+          }}>
+
+            <FontAwesomeIcon
+              style={{
+                // margin: '0 20px 0 0',
+                cursor: 'pointer'
               }}
-            >
-              {'>'}
-            </p>
-          </>
+              icon={faChevronLeft}
+              onClick={() => {
+                console.log({ page, size })
+                getLastReportPage(page, size)
+              }}
+            />
+            {/* <p>{page == 0 ? ((page == 0 ? 1 : page) * size - 24) : }-{Math.min(sentBroadcasts.list.length, (page == 0 ? 1 : page) * size)} of {sentBroadcasts.max_entries}</p> */}
+            {/* <p>{(page == 0 ? 1 : page) * size - sentBroadcasts.list.length + 1}-{Math.min(sentBroadcasts.list.length, (page == 0 ? 1 : page) * size)} of {sentBroadcasts.max_entries}</p> */}
+            <p style={{
+              margin: '0 20px',
+              fontFamily: 'Open Sans',
+              fontSize: '14px'
+              // cursor: 'pointer'
+            }}
+            >{from} - {to} of {sentBroadcasts.max_entries}</p>
+
+            <FontAwesomeIcon
+              style={{
+                // margin: '0 20px 0 0',
+                cursor: 'pointer'
+              }}
+              icon={faChevronRight}
+              onClick={() => {
+                if (to < sentBroadcasts.max_entries) {
+
+                  getNextReportPage(page, size)
+                }
+              }} />
+          </div>
         }
       </section>
     </>

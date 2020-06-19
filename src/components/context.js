@@ -14,7 +14,10 @@ const MessageContextProvider = ({ children, location }) => {
   const [user, setUser] = useState({
   })
   const [secGroups, setSecGroups] = useState([])
-  const [sentBroadcasts, setSentBroadcasts] = useState([])
+  const [sentBroadcasts, setSentBroadcasts] = useState({
+    max_entries: 0,
+    list: []
+  })
   const [broadcastSummary, setBroadcastSummary] = useState({})
   const [report, setReport] = useState({})
   const [message, setMessage] = useState("")
@@ -92,37 +95,44 @@ const MessageContextProvider = ({ children, location }) => {
         }
       })
       if (response.data.data.message) {
-        if (sentBroadcasts.map) {
-          setSentBroadcasts([{
-            message_id: response.data.data.message_id,
-            message: response.data.data.rawMessage,
-            // 'sender': username,
-            summary: {
-              pending: 0,
-              ack: 0,
-              sent: 0,
-              failed: 0,
-              read: 0
-            },
-            target: response.data.data.securityGroups,
-            when_sent: new Date().toLocaleString()
-          }, ...sentBroadcasts,
-          ])
+        if (sentBroadcasts.list.map) {
+          setSentBroadcasts({
+            list: [{
+              message_id: response.data.data.message_id,
+              message: response.data.data.rawMessage,
+              // 'sender': username,
+              summary: {
+                pending: 0,
+                ack: 0,
+                sent: 0,
+                failed: 0,
+                read: 0,
+                ignored: 0
+
+              },
+              target: response.data.data.securityGroups,
+              when_sent: new Date().toLocaleString()
+            }, ...sentBroadcasts.list,
+            ]
+          })
         } else {
-          setSentBroadcasts([{
-            message_id: response.data.data.message_id,
-            message: response.data.data.rawMessage,
-            // 'sender': username,
-            summary: {
-              pending: 0,
-              ack: 0,
-              sent: 0,
-              failed: 0,
-              read: 0
-            },
-            target: response.data.data.securityGroups,
-            when_sent: new Date().toLocaleString()
-          }])
+          setSentBroadcasts({
+            list: [{
+              message_id: response.data.data.message_id,
+              message: response.data.data.rawMessage,
+              // 'sender': username,
+              summary: {
+                pending: 0,
+                ack: 0,
+                sent: 0,
+                failed: 0,
+                read: 0,
+                ignored: 0
+              },
+              target: response.data.data.securityGroups,
+              when_sent: new Date().toLocaleString()
+            }]
+          })
         }
       }
     }
@@ -167,8 +177,10 @@ const MessageContextProvider = ({ children, location }) => {
           Authorization: `Basic ${token}`
         }
       })
-      console.log({ response })
-      setSentBroadcasts(response.data.list)
+      setSentBroadcasts({
+        max_entries: response.data.max_entries,
+        list: response.data.list
+      })
     }
     catch (err) {
       alert('Your token expired! run /panel again.')
