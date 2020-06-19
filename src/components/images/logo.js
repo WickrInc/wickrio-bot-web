@@ -13,12 +13,12 @@ import Img from "gatsby-image"
  * - `useStaticQuery`: https://www.gatsbyjs.org/docs/use-static-query/
  */
 
-const Attach = () => {
+const Logo = () => {
   const data = useStaticQuery(graphql`
     query {
-      placeholderImage: file(relativePath: { eq: "attach.png" }) {
+      placeholderImage: file(relativePath: { eq: "pro-black@3x.jpg" }) {
         childImageSharp {
-          fluid(maxWidth: 30) {
+          fluid(maxWidth: 500) {
             ...GatsbyImageSharpFluid
           }
         }
@@ -29,4 +29,4 @@ const Attach = () => {
   return <Img fluid={data.placeholderImage.childImageSharp.fluid} />
 }
 
-export default Attach
+export default Logo

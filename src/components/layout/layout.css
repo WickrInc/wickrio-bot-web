@@ -14,8 +14,8 @@ td:first-child, th:first-child {
 padding-left: 12px;
 }
 select {
-min-width: 284px;
-
+  min-width: 284px;
+  cursor: pointer;
 }
 .Rectangle {
   width: 40px;
@@ -111,7 +111,7 @@ background-color: var(--light);
 /* padding: 16px; */
 }
 
-.labels{
+label{
 font-family: 'Open Sans';
 font-size: 14px;
 font-weight: 600;
@@ -151,7 +151,7 @@ color: rgba(0, 0, 0, 0.87);
 select {
 height: 48px;
 }
-.disabledSendButton {
+/* .disabledSendButton {
 padding: 10px 24px;
 border: 0;
 font-family: 'Open Sans';
@@ -166,10 +166,15 @@ letter-spacing: 1.28px;
 text-align: center;
 color: var(--light);
 background-color: var(--bg-dark);
-}
+} */
 
-.sendButton {
+/* .sendButton {
 padding: 10px 24px;
+transition:         0.4s ease-in;
+-o-transition:      0.4s ease-in;
+-ms-transition:     0.4s ease-in;
+-moz-transition:    0.4s ease-in;
+-webkit-transition: 0.4s ease-in;
 border: 0;
 font-family: 'Open Sans';
 font-size: 14px;
@@ -183,8 +188,13 @@ background-color: var(--secondary);
 line-height: 1.14;
 letter-spacing: 1.28px;
 text-align: center;
+position: relative;
 color: var(--light);
-}
+} */
+/* 
+.sendButton:active {
+  transform: translateY(4px);
+} */
 
 .downloadButton {
 padding: 10px 24px;
@@ -301,12 +311,10 @@ color: var(--dark);
 
 
 
+
 @media only screen and (min-width: 601px) {
 .checkboxes {
-margin: 18px 0px 18px 120px;
-}
-.labels {
-padding: 4px 20px;
+margin: 18px 0px 0 110px;
 }
 }
 
@@ -314,9 +322,8 @@ padding: 4px 20px;
 .checkboxes {
 margin: 18px 0px;
 }
-.labels {
+label, #secgroup-label  {
 text-align: left;
-padding: 4px;
 }
 }
 
@@ -476,6 +483,7 @@ padding: 0;
 white-space: normal;
 }
 textarea {
+padding: 20px;
 overflow: auto;
 }
 [type="checkbox"],

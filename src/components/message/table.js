@@ -37,36 +37,36 @@ const SentMessages = () => {
 
   return (
     <>
-      <h3 style={{
-        marginTop: '40px',
-        overflow: 'scroll'
-      }}
-        className="title">Sent Messages</h3>
-      <p className="subtitle">Click on the message to view detailed reports</p>
       <section
         className="sentsection"
         style={{
-          marginTop: '20px',
+          margin: '40px 0',
           overflow: 'scroll'
         }}
       >
-        {sentBroadcasts[0] ?
-          <table >
-            <thead bgcolor="white">
-              <tr>
-                <th className="Date">Date</th>
-                <th className="tlabel">Received</th>
-                <th className="tlabel">Pending</th>
-                <th className="tlabel">Failed</th>
-                <th className="tlabel">Acknowledged</th>
-              </tr>
-            </thead>
+        <h3
+          className="title">Sent Messages</h3>
+        <p className="subtitle">Click on the message to view detailed reports</p>
+
+        <table >
+          <thead bgcolor="white">
+            <tr>
+              <th className="Date">Date</th>
+              <th className="tlabel">Read</th>
+              <th className="tlabel">Pending</th>
+              <th className="tlabel">Failed</th>
+              <th className="tlabel">Acknowledged</th>
+              <th className="tlabel">Ignored</th>
+              <th className="tlabel">Sent</th>
+            </tr>
+          </thead>
+          {sentBroadcasts[0] &&
             <tbody>
               {sentBroadcasts[0] && sentBroadcasts.slice(0, 24)?.map((broadcast, idx) => {
+                console.log({ broadcast })
                 return (
                   <tr key={idx}>
                     <td>
-
                       <div style={{
                         display: 'flex',
                         justifyContent: 'space-between',
@@ -126,22 +126,29 @@ const SentMessages = () => {
                           }}>Download</p>
                       </div>
                     </td>
-                    <td className="trow">{Math.max(0, broadcast.summary.sent - broadcast.summary.failed)}</td>
+                    <td className="trow">{broadcast.summary.read}</td>
                     <td className="trow">{broadcast.summary.pending}</td>
                     <td className="trow">{broadcast.summary.failed}</td>
                     <td className="trow">{broadcast.summary.ack}</td>
+                    <td className="trow">{broadcast.summary.ignored}</td>
+                    <td className="trow">{broadcast.summary.sent}</td>
                   </tr>
                 )
               })
               }
             </tbody>
+          }
 
-          </table> :
-          <p style={{
-            textAlign: "center"
-          }}>no broadcasts yet
-        </p>
-        }
+        </table>
+
+        {!sentBroadcasts[0] && <p style={{
+          backgroundColor: '#f2f3f5',
+          padding: '24px 0',
+          textAlign: "center"
+        }}>send a broadcast message to view a detailed report here
+          </p>}
+
+
         {sentBroadcasts.length > 1 &&
           <>
             <p

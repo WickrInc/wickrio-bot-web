@@ -2,7 +2,6 @@ import React from "react"
 import { SendMessage } from "../components/message"
 import { SentMessages } from "../components/message"
 import SEO from "../components/seo"
-import Settings from "../components/images/settings"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCog } from '@fortawesome/free-solid-svg-icons'

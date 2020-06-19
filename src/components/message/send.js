@@ -1,10 +1,16 @@
 import React, { useEffect, useContext } from "react"
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 import { Link } from "gatsby"
-import Audio from "../images/audio"
 import { MessageContext } from "../context"
 // import Attach from "../images/attach"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperclip, faMicrophone, faMapMarkerAlt, faTimes } from '@fortawesome/free-solid-svg-icons'
+import { Button, makeStyles, TextField, FormControlLabel, Checkbox } from '@material-ui/core';
+
 let repeatlist = [{
   value: 2,
   name: '2 times'
@@ -56,6 +62,57 @@ const SendMessage = () => {
     fileSelector.click();
   }
 
+  const useStyles = makeStyles(() => ({
+    color: {
+      backgroundColor: '#f39200',
+      color: '#ffffff',
+      fontFamily: 'Open Sans',
+      fontSize: '14px',
+      fontWeight: 600,
+      lineHeight: 1.14,
+      letterSpacing: '1.28px',
+      '&:hover': {
+        backgroundColor: '#f39200'
+      }
+    },
+    labels: {
+      padding: '4px 20px',
+      fontFamily: 'Open Sans',
+      fontSize: '14px',
+      fontWeight: 600,
+      lineHeight: 1.14,
+      letterSpacing: '1.28px',
+      textAlign: 'right',
+      minWidth: '120px',
+      /* margin-right: 24px; */
+      color: 'rgba(0, 0, 0, 0.87)'
+    },
+    inputs: {
+      borderRadius: '4px',
+      border: 'solid 1px var(--bg-light)',
+      backgroundColor: 'var(--light)'
+    },
+    checkboxes: {
+      // height: '14px',
+      // width: '14px'
+    }
+  }));
+
+
+
+  // const ColorButton = withStyles(() => ({
+  //   root: {
+  //     // color: theme.palette.getContrastText(purple[500]),
+  //     backgroundColor: '#f39200'
+  //     // '&:hover': {
+  //       //   backgroundColor: purple[700],
+  //       // },
+  //     },
+  //   }))(Button);
+
+
+
+  const classes = useStyles();
   return (
     <form
       className="border"
@@ -75,13 +132,19 @@ const SendMessage = () => {
       }}>
 
         <h3 className="title">New Broadcast Message</h3>
-        <button
-          type="button"
+        <Button
+          // type="button"
           disabled={!message ? true : false}
           onClick={() => sendBroadcast()}
-          className={message ? "sendButton" : 'disabledSendButton'}
-        >Send</button>
+          className={classes.color}
+          // className={message ? "sendButton" : 'disabledSendButton'}
+          variant="contained"
+        // color="primary"
+        >Send</Button>
       </div>
+
+
+
       <div style={{
         display: 'flex',
         alignItems: 'center',
@@ -89,46 +152,42 @@ const SendMessage = () => {
         flexWrap: 'wrap'
       }}>
 
-        <label
-          className="labels"
-          style={{
-            // padding: '4px 20px 4px',
-            // minWidth: '120px'
-          }}
-          htmlFor="secgroup">Send To
-          </label>
-        <label
-          className="inner"
-          style={{
-            flex: 1,
-            minWidth: '284px',
-          }}>
+        <InputLabel className={classes.labels} id="secgroup-label">Send To</InputLabel>
 
-          <select
+        <FormControl variant="outlined" className={classes.formControl}>
+          <Select
+            labelId="secgroup-label"
+            name="secgroup"
             id='secgroup'
-            className="border"
-            style={{
-              width: '100%',
-              fontFamily: 'Open Sans',
-              fontSize: '14px',
-              textIndent: '6px'
-            }}
+            // value={age}
+            // onChange={handleChange}
             defaultValue="default"
             onChange={e => {
               setSelectedSecGroup(e.target.value)
             }}
-            type="dropdown" id="secgroup" name="secgroup"
+            // label="secgroup"
+            style={{
+              width: '100%',
+              fontFamily: 'Open Sans',
+              fontSize: '14px',
+              textIndent: '6px',
+              minWidth: '284px'
+
+            }}
           >
-            <option value="default" disabled>{secGroups.length > 1 ? 'Select Security Groups' : 'Getting Security Groups'}</option>
-            <option value='NETWORK'>Whole network</option>
+            <MenuItem value="none">None</MenuItem>
+            <MenuItem value='default' disabled>{secGroups.length > 1 ? 'Select Security Groups' : 'Getting Security Groups'}</MenuItem>
+            <MenuItem value="NETWORK">Whole network</MenuItem>
             {secGroups && secGroups?.map((secgroup, idx) => {
               return (
-                <option value={secgroup.id} key={idx}>{secgroup.name}</option>
+                <MenuItem value={secgroup.id} key={idx}>{secgroup.name}</MenuItem>
               )
             })
             }
-          </select>
-        </label>
+          </Select>
+        </FormControl>
+
+
       </div>
       <div style={{
         display: 'flex',
@@ -139,26 +198,34 @@ const SendMessage = () => {
 
         <label
           className="labels"
-          htmlFor="message"
+          htmlFor="text"
           style={{
+            padding: '4px 20px',
           }}>Message</label>
-        <textarea
-          id="message"
-          className="border"
+
+        <TextField
+          id="text"
+          name="text"
+          // labelId="text"
+
+          // label="Message"
+          multiline
+          rows={4}
+          value={message}
+          variant="outlined"
+          placeholder="Add a message"
+          // className={classes.inputs}
+          onChange={e => {
+            setMessage(e.target.value)
+          }}
           style={{
             flex: 1,
             fontSize: '14px',
             fontFamily: 'Open Sans',
             minWidth: '284px',
-            padding: '16px 14px'
+            // padding: '16px 14px'
           }}
-          value={message}
-          onChange={e => {
-            setMessage(e.target.value)
-          }}
-          rows="5"
-          placeholder="Add a message"
-          name="text" id="text" />
+        />
         <div style={{
           display: 'flex',
           position: 'absolute',
@@ -169,11 +236,12 @@ const SendMessage = () => {
             <p style={{
               fontFamily: 'Open Sans',
               fontSize: '14px',
-              lineHeight: '18px'
+              lineHeight: '18px',
             }}>{attachment.name}</p>
             <FontAwesomeIcon
               style={{
-                margin: '0 20px 0 0'
+                margin: '0 20px 0 0',
+                cursor: 'pointer'
               }}
               icon={faTimes}
               onClick={() => {
@@ -216,44 +284,47 @@ const SendMessage = () => {
           // margin: '18px 0 18px 120px'
         }}>
         <div>
-
-          <input
-            className="border"
-            style={{
-              marginRight: '4px',
-              fontSize: '14px',
-              fontFamily: 'Open Sans'
-            }}
+          <Checkbox
             checked={acknowledge}
             onChange={e => {
               setAcknowledge(!acknowledge)
             }}
-            type="checkbox" name="acknowledge" id="acknowledge" />
+            className={classes.checkboxes}
+            // style={{
+            //   marginRight: '4px',
+            //   fontSize: '14px',
+            //   fontFamily: 'Open Sans'
+            // }}
+            size="small"
+            name="acknowledge"
+            id="acknowledge"
+            color="primary"
+          />
           <label
             className="smlabels"
             htmlFor="acknowledge">Ask for acknowledgement </label>
         </div>
         <div>
 
-          <input
-            style={{
-              marginRight: '4px',
-              fontSize: '14px',
-              fontFamily: 'Open Sans',
-            }}
+
+          <Checkbox
             disabled
             checked={repeat}
             onChange={e => {
               enableRepeat(!repeat)
             }}
-            className="border"
-            type="checkbox" name="Repeat" id="Repeat" />
+            className={classes.checkboxes}
+            size="small"
+            color="primary"
+            name="repear"
+            id="repear"
+          />
           <label
             className="smlabels"
-            htmlFor="Repeat">Repeat</label>
+            htmlFor="repear">Repeat</label>
         </div>
       </div>
-      <div style={{
+      {/* <div style={{
         display: 'grid',
         alignItems: 'center',
         gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
@@ -323,7 +394,7 @@ const SendMessage = () => {
             })}
           </select>
         </div>
-      </div>
+      </div> */}
 
     </form >
   )

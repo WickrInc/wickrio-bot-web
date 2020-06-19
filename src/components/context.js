@@ -91,12 +91,11 @@ const MessageContextProvider = ({ children, location }) => {
           'Authorization': `Basic ${token}`
         }
       })
-      console.log({ response })
       if (response.data.data.message) {
         if (sentBroadcasts.map) {
           setSentBroadcasts([{
             message_id: response.data.data.message_id,
-            message: response.data.data.message,
+            message: response.data.data.rawMessage,
             // 'sender': username,
             summary: {
               pending: 0,
@@ -112,7 +111,7 @@ const MessageContextProvider = ({ children, location }) => {
         } else {
           setSentBroadcasts([{
             message_id: response.data.data.message_id,
-            message: response.data.data.message,
+            message: response.data.data.rawMessage,
             // 'sender': username,
             summary: {
               pending: 0,

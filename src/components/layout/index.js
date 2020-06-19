@@ -35,17 +35,37 @@ const Layout = ({ children, location }) => {
         style={{
           margin: `0 auto`,
           maxWidth: 960,
-          minWidth: 330,
+          minWidth: 360,
           padding: `0 1.0875rem 1.45rem`,
+          display: 'flex',
+          flexDirection: 'column'
         }}
       >
-        <main>{children}</main>
-        <footer>
+        <main style={{
+          flex: 1,
+          minHeight: 'calc(100vh - 162px)'
+        }}>{children}</main>
+      </div>
+      <footer style={{
+        borderTop: 'var(--bg-light) 1px solid',
+
+      }}>
+        <div
+          style={{
+            margin: `5px auto 7px auto`,
+            maxWidth: 960,
+            minWidth: 330,
+            fontFamily: 'Open Sans',
+            fontSize: '14px'
+          }}
+        >
+
+
           © {new Date().getFullYear()},
           {` `}
           <a href="https://www.wickr.com">Wickr</a>
-        </footer>
-      </div>
+        </div>
+      </footer>
     </MessageContextProvider>
   )
 }
