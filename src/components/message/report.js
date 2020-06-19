@@ -7,6 +7,7 @@ const Report = ({ id }) => {
   const [page, setPage] = useState(0)
   const [size, setSize] = useState(25)
 
+  console.log({ id })
 
   useEffect(() => {
 

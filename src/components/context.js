@@ -135,6 +135,12 @@ const MessageContextProvider = ({ children, location }) => {
           })
         }
       }
+      setMessage("")
+      setAcknowledge(false)
+      setRepeatNumber(false)
+      setSelectedSecGroup(false)
+      setFreq(false)
+      setAttachment(false)
     }
     catch (err) {
       alert('Your token expired! run /panel again.')
