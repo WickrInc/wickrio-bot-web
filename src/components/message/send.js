@@ -98,8 +98,6 @@ const SendMessage = () => {
     }
   }));
 
-
-
   // const ColorButton = withStyles(() => ({
   //   root: {
   //     // color: theme.palette.getContrastText(purple[500]),
@@ -109,8 +107,6 @@ const SendMessage = () => {
   //       // },
   //     },
   //   }))(Button);
-
-  console.log(secGroups.length > 1)
 
   const classes = useStyles();
   return (

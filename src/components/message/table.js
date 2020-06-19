@@ -17,14 +17,11 @@ const SentMessages = () => {
   }, [])
 
   const getNextReportPage = (page, size) => {
-    console.log({ newpage: page })
-
     sendStatus(page + 1, size)
     setPage(page + 1)
   }
 
   const getLastReportPage = (page, size) => {
-    console.log({ page })
     if (page !== 0) {
       sendStatus(page - 1, size)
       setPage(page - 1)
@@ -33,7 +30,6 @@ const SentMessages = () => {
       // sendStatus(page, size)
     }
   }
-  console.log({ sentBroadcasts })
   let from = page == 0 ?
     (sentBroadcasts.list.length - (sentBroadcasts.list.length - 1)) * page + 1 :
     size * (sentBroadcasts.list.length - (sentBroadcasts.list.length - 1)) + 1
@@ -148,7 +144,7 @@ const SentMessages = () => {
 
         </table>
 
-        {!sentBroadcasts[0] && <p style={{
+        {!sentBroadcasts.list[0] && <p style={{
           backgroundColor: '#f2f3f5',
           padding: '24px 0',
           textAlign: "center"

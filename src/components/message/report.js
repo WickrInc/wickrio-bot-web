@@ -16,7 +16,6 @@ const Report = ({ id }) => {
 
   // const broadcast = sentBroadcasts.find(broadcast => broadcast.message_id === id)
   const secGroup = secGroups.find(group => group.id === report?.broadcast?.target) || { name: 'network' }
-  console.log({ report })
   const date = new Date(report?.broadcast?.when_sent)
   // console.log({ secGroups, report, date })
   // console.log(report.broadcast.summary)
