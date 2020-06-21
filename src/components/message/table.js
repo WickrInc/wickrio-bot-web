@@ -21,6 +21,7 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
 
 const Row = ({ broadcast }, key) => {
+  console.log({ broadcast })
   const { downloadReport, token, secGroups } = useContext(MessageContext)
 
   const useRowStyles = makeStyles({
@@ -101,7 +102,7 @@ const Row = ({ broadcast }, key) => {
       <TableCell align="center">{broadcast.summary.read}</TableCell>
       <TableCell align="center">{broadcast.summary.pending}</TableCell>
       <TableCell align="center">{broadcast.summary.failed}</TableCell>
-      <TableCell align="center">{broadcast.summary.ack}</TableCell>
+      <TableCell align="center">{broadcast.summary.acked}</TableCell>
       <TableCell align="center">{broadcast.summary.ignored}</TableCell>
       <TableCell align="center">{broadcast.summary.sent}</TableCell>
     </TableRow>
@@ -109,7 +110,7 @@ const Row = ({ broadcast }, key) => {
 }
 
 const SentMessages = () => {
-  const { sendStatus, sentBroadcasts } = useContext(MessageContext)
+  const { sendStatus, sentBroadcasts, sendBroadcastSummary } = useContext(MessageContext)
   // being reloaded twice on initial render
   // and after every change in send component
   // console.log(sentBroadcasts)
@@ -123,6 +124,7 @@ const SentMessages = () => {
 
   const useRowStyles = makeStyles({
     root: {
+      margin: 0,
       boxShadow: 'none',
       maxHeight: 800,
       '& > *': {
@@ -151,7 +153,6 @@ const SentMessages = () => {
 
   useEffect(() => {
     sendStatus(0, 25)
-    // sendBroadcastSummary()
   }, [])
 
   const getNextReportPage = (page, size) => {
@@ -168,12 +169,10 @@ const SentMessages = () => {
       // sendStatus(page, size)
     }
   }
-  let from = page == 0 ?
-    (sentBroadcasts.list.length - (sentBroadcasts.list.length - 1)) * page + 1 :
-    size * (sentBroadcasts.list.length - (sentBroadcasts.list.length - 1)) + 1
+  let from = page == 0 ? 1 : page * size + 1
 
 
-  let to = sentBroadcasts.list.length * (page + 1)
+  let to = sentBroadcasts.list.length < size ? sentBroadcasts.max_entries : sentBroadcasts.list.length * (page + 1)
 
 
   const createSortHandler = (property) => (event) => {
@@ -206,12 +205,6 @@ const SentMessages = () => {
     return stabilizedThis.map((el) => el[0]);
   }
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, sentBroadcasts.list.length - page * rowsPerPage);
-  console.log({ page, rowsPerPage })
-  console.log({
-    list: sentBroadcasts.list
-      .slice(25, 50)
-  }
-  )
   return (
     <section
       className="sentsection"
@@ -226,7 +219,7 @@ const SentMessages = () => {
 
 
       <TableContainer component={Paper} className={classes.root}>
-        <Table stickyHeader aria-label="sticky collapsible table">
+        <Table className={classes.root} stickyHeader aria-label="sticky collapsible table">
           <TableHead >
             <TableRow >
               {/* <TableCell /> */}
@@ -399,7 +392,7 @@ const SentMessages = () => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'flex-end',
-          margin: '0 32px'
+          margin: '10px 32px'
         }}>
 
           <FontAwesomeIcon

@@ -58,7 +58,6 @@ const MessageContextProvider = ({ children, location }) => {
           'Authorization': `Basic ${token}`
         }
       })
-      // console.log(response.data)
       setSecGroups(response.data)
 
     }
@@ -94,7 +93,9 @@ const MessageContextProvider = ({ children, location }) => {
           'Authorization': `Basic ${token}`
         }
       })
+      console.log({ response })
       if (response.data.data.message) {
+        console.log(secGroups.find(group => group.id === selectedSecGroup))
         if (sentBroadcasts.list.map) {
           setSentBroadcasts({
             list: [{
@@ -103,14 +104,14 @@ const MessageContextProvider = ({ children, location }) => {
               // 'sender': username,
               summary: {
                 pending: 0,
-                ack: 0,
+                acked: 0,
                 sent: 0,
                 failed: 0,
                 read: 0,
                 ignored: 0
 
               },
-              target: response.data.data.securityGroups,
+              target: selectedSecGroup ? secGroups.find(group => group.id === selectedSecGroup).id : 'network',
               when_sent: new Date().toLocaleString()
             }, ...sentBroadcasts.list,
             ]
@@ -123,13 +124,13 @@ const MessageContextProvider = ({ children, location }) => {
               // 'sender': username,
               summary: {
                 pending: 0,
-                ack: 0,
+                acked: 0,
                 sent: 0,
                 failed: 0,
                 read: 0,
                 ignored: 0
               },
-              target: response.data.data.securityGroups,
+              target: selectedSecGroup ? secGroups.find(group => group.id === selectedSecGroup).id : 'network',
               when_sent: new Date().toLocaleString()
             }]
           })
@@ -158,7 +159,6 @@ const MessageContextProvider = ({ children, location }) => {
           Authorization: `Basic ${token}`
         }
       })
-      console.log(response.data)
 
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
@@ -196,7 +196,7 @@ const MessageContextProvider = ({ children, location }) => {
 
 
   const sendBroadcastSummary = async () => {
-    const statuspath = encodeURI(`${baseAPIurl}/Status/`)
+    const statuspath = encodeURI(`${baseAPIurl}/Status/1`)
     try {
       const response = await axios.get(statuspath, {
         headers: {

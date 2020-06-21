@@ -16,11 +16,11 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import TablePagination from '@material-ui/core/TablePagination';
+import { faChevronLeft, faChevronDown, faChevronRight, faLessThanEqual } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-
-const Row = ({ user }, key) => {
-  const { downloadReport, token, secGroups } = useContext(MessageContext)
-
+const Row = ({ user }, idx) => {
   const useRowStyles = makeStyles({
     root: {
       boxShadow: 'none',
@@ -33,7 +33,7 @@ const Row = ({ user }, key) => {
   const [open, setOpen] = useState(false)
 
   return (
-    <TableRow className={classes.root} key={key}>
+    <TableRow className={classes.root} key={idx}>
       {/* <TableCell>
         <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
           {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
@@ -69,7 +69,7 @@ const Row = ({ user }, key) => {
             color: 'var(--text-light)',
             lineHeight: 1.33
           }}>
-            {new Date(user.read_datetime).toLocaleDateString()}
+            {new Date(user.sent_datetime).toLocaleDateString()}
           </p>
 
           <p style={{
@@ -80,7 +80,7 @@ const Row = ({ user }, key) => {
             color: 'var(--text-light)',
             lineHeight: 1.33
           }}>
-            {new Date(user.read_datetime).toLocaleTimeString()}
+            {new Date(user.sent_datetime).toLocaleTimeString()}
           </p>
         </div>
       </TableCell>
@@ -94,7 +94,7 @@ const Row = ({ user }, key) => {
             color: 'var(--text-light)',
             lineHeight: 1.33
           }}>
-            {new Date(user.read_datetime).toLocaleDateString()}
+            {user.read_datetime ? new Date(user.read_datetime).toLocaleDateString() : 'none'}
           </p>
 
           <p style={{
@@ -105,7 +105,7 @@ const Row = ({ user }, key) => {
             color: 'var(--text-light)',
             lineHeight: 1.33
           }}>
-            {new Date(user.read_datetime).toLocaleTimeString()}
+            {user.read_datetime ? new Date(user.read_datetime).toLocaleTimeString() : 'none'}
           </p>
         </div></TableCell>
     </TableRow>
@@ -153,32 +153,20 @@ const Report = ({ id }) => {
     setOrderBy(property);
   };
 
-  useEffect(() => {
-    sendStatus(0, 25)
-    // sendBroadcastSummary()
-  }, [])
-
-  const getNextReportPage = (page, size) => {
-    sendStatus(page + 1, size)
+  const getNextReportPage = (id, page, size) => {
+    sendReportStatus(id, page + 1, size)
     setPage(page + 1)
   }
 
-  const getLastReportPage = (page, size) => {
+  const getLastReportPage = (id, page, size) => {
     if (page !== 0) {
-      sendStatus(page - 1, size)
+      sendReportStatus(id, page - 1, 25)
       setPage(page - 1)
 
       // console.log({ newpage: page - 1 })
       // sendStatus(page, size)
     }
   }
-  let from = page == 0 ?
-    (sentBroadcasts.list.length - (sentBroadcasts.list.length - 1)) * page + 1 :
-    size * (sentBroadcasts.list.length - (sentBroadcasts.list.length - 1)) + 1
-
-
-  let to = sentBroadcasts.list.length * (page + 1)
-
 
   const createSortHandler = (property) => (event) => {
     handleRequestSort(event, property);
@@ -211,10 +199,7 @@ const Report = ({ id }) => {
   }
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, sentBroadcasts.list.length - page * rowsPerPage);
 
-  console.log({ id })
-
   useEffect(() => {
-
     // no way to get accumulated number of records 
     sendReportStatus(id, 0, 25)
   }, [])
@@ -222,11 +207,8 @@ const Report = ({ id }) => {
   // const broadcast = sentBroadcasts.find(broadcast => broadcast.message_id === id)
   const secGroup = secGroups.find(group => group.id === report?.broadcast?.target) || { name: 'network' }
   const date = new Date(report?.broadcast?.when_sent)
-  // console.log({ secGroups, report, date })
-  // console.log(report.broadcast.summary)
-
-  console.log({ report })
-
+  let from = page == 0 ? 1 : page * size + 1
+  let to = report?.broadcast?.report?.length < size ? report.broadcast.report.length : report?.broadcast?.report.length * (page + 1)
 
   return (
     <>
@@ -251,11 +233,37 @@ const Report = ({ id }) => {
               <h2
                 className="summaryVal"
                 style={{ margin: 0 }}>
-                {Math.max(0, report.broadcast.summary.sent - report.broadcast.summary.failed)}
+                {Math.max(0, report.broadcast.summary.sent)}
               </h2>
               <p className="summary"
                 style={{ margin: 0 }}>
-                recieved
+                sent
+              </p>
+            </div>
+            <div style={{
+              margin: '0px 15px 0 0'
+            }}>
+              <h2
+                className="summaryVal"
+                style={{ margin: 0 }}>
+                {Math.max(0, report.broadcast.summary.ignored)}
+              </h2>
+              <p className="summary"
+                style={{ margin: 0 }}>
+                ignored
+              </p>
+            </div>
+            <div style={{
+              margin: '0px 15px 0 0'
+            }}>
+              <h2
+                className="summaryVal"
+                style={{ margin: 0 }}>
+                {Math.max(0, report.broadcast.summary.read)}
+              </h2>
+              <p className="summary"
+                style={{ margin: 0 }}>
+                read
               </p>
             </div>
             <div style={{
@@ -287,7 +295,7 @@ const Report = ({ id }) => {
             }}>
               <h2 className="summaryVal"
                 style={{ margin: 0 }}>
-                {report.broadcast.summary?.ack}
+                {report.broadcast.summary?.acked}
               </h2>
               <p className="summary"
                 style={{ margin: 0 }}>
@@ -343,42 +351,65 @@ const Report = ({ id }) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-
-                  {report.broadcast.report?.map((user, idx) => {
-                    if (user.status == 0) { user.status = "pending" }
-                    else if (user.status == 1) { user.status = "sent" }
-                    else if (user.status == 2) { user.status = "failed" }
-                    else if (user.status == 3) { user.status = "ack" }
-                    else if (user.status == 4) { user.status = "ignored" }
-                    else if (user.status == 5) { user.status = "aborted" }
-                    else if (user.status == 6) { user.status = "read" }
-                    else if (user.status == 7) { user.status = "delivered" }
-                    console.log({ user })
-                    return (
-                      <Row user={user} key={user.message_id} />
-                    )
-                  })}
+                  {
+                    stableSort(report.broadcast.report, getComparator(order, orderBy))
+                      ?.map((user, idx) => <Row user={user} key={idx} />)
+                  }
                 </TableBody>
 
               </Table>
             </TableContainer>
 
 
+            {/* <TablePagination
+              rowsPerPageOptions={[10, 25, 100]}
+              component="div"
+              count={report.broadcast.report.length}
+              rowsPerPage={size}
+              page={page}
+              onChangePage={handleChangePage}
+              onChangeRowsPerPage={handleChangeRowsPerPage}
+            /> */}
+            {report.broadcast.report.length > 0 &&
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-end',
+                margin: '10px 32px'
+              }}>
 
-            {report.broadcast.report.length > 1 &&
-              <>
-                <p
-                  onClick={() => getLastReportPage(page, size)}
-                >
-                  {'<'}
-                </p>
-                <p>{(page == 0 ? 1 : page) * size - 24}-{(page == 0 ? 1 : page) * size}</p>
-                <p
-                  onClick={() => getNextReportPage(page, size)}
-                >
-                  {'>'}
-                </p>
-              </>
+                <FontAwesomeIcon
+                  style={{
+                    // margin: '0 20px 0 0',
+                    cursor: 'pointer'
+                  }}
+                  icon={faChevronLeft}
+                  onClick={() => {
+                    getLastReportPage(report.messageID, page, size)
+                  }}
+                />
+                {/* <p>{page == 0 ? ((page == 0 ? 1 : page) * size - 24) : }-{Math.min(sentBroadcasts.list.length, (page == 0 ? 1 : page) * size)} of {sentBroadcasts.max_entries}</p> */}
+                {/* <p>{(page == 0 ? 1 : page) * size - sentBroadcasts.list.length + 1}-{Math.min(sentBroadcasts.list.length, (page == 0 ? 1 : page) * size)} of {sentBroadcasts.max_entries}</p> */}
+                <p style={{
+                  margin: '0 20px',
+                  fontFamily: 'Open Sans',
+                  fontSize: '14px'
+                  // cursor: 'pointer'
+                }}
+                >{from} - {to} of {report.broadcast.report.length}</p>
+
+                <FontAwesomeIcon
+                  style={{
+                    // margin: '0 20px 0 0',
+                    cursor: 'pointer'
+                  }}
+                  icon={faChevronRight}
+                  onClick={() => {
+                    if (to < report.broadcast.report.length) {
+                      getNextReportPage(report.messageID, page, size)
+                    }
+                  }} />
+              </div>
             }
           </section>
         </>

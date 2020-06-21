@@ -24,9 +24,9 @@ const IndexPage = ({ location }) => {
           <h1>Broadcast Bot</h1>
           {/* <h6 className="subtitle">Subtitle 2Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.</h6> */}
         </div>
-        {/* <div style={{ width: '24px' }}> */}
-        {/* <Settings /> */}
-        <div className="Rectangle">
+        <div style={{ width: '24px' }}>
+          {/* <Settings /> */}
+          {/* <div className="Rectangle">
 
           <FontAwesomeIcon icon={faCog} style={{
             color: '#6c6c6c',

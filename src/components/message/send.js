@@ -10,6 +10,8 @@ import { MessageContext } from "../context"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperclip, faMicrophone, faMapMarkerAlt, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { Button, makeStyles, TextField, FormControlLabel, Checkbox } from '@material-ui/core';
+import Chip from '@material-ui/core/Chip';
+import Tooltip from '@material-ui/core/Tooltip';
 
 let repeatlist = [{
   value: 2,
@@ -92,9 +94,10 @@ const SendMessage = () => {
       border: 'solid 1px var(--bg-light)',
       backgroundColor: 'var(--light)'
     },
-    checkboxes: {
-      // height: '14px',
-      // width: '14px'
+    chip: {
+      bottom: '8px',
+      position: 'absolute',
+      left: '10px'
     }
   }));
 
@@ -199,78 +202,93 @@ const SendMessage = () => {
           style={{
             padding: '4px 20px',
           }}>Message</label>
-
-        <TextField
-          id="text"
-          name="text"
-          // labelId="text"
-
-          // label="Message"
-          multiline
-          rows={4}
-          value={message}
-          variant="outlined"
-          placeholder="Add a message"
-          // className={classes.inputs}
-          onChange={e => {
-            setMessage(e.target.value)
-          }}
-          style={{
-            flex: 1,
-            fontSize: '14px',
-            fontFamily: 'Open Sans',
-            minWidth: '284px',
-            // padding: '16px 14px'
-          }}
-        />
         <div style={{
-          display: 'flex',
-          position: 'absolute',
-          right: '10px',
-          bottom: '10px'
+          flex: 1,
+          fontSize: '14px',
+          fontFamily: 'Open Sans',
+          minWidth: '284px',
+          position: 'relative',
+          display: 'flex'
+          // padding: '16px 14px'
         }}>
-          {attachment && <>
-            <p style={{
-              fontFamily: 'Open Sans',
+
+          <TextField
+            id="text"
+            name="text"
+            // labelId="text"
+
+            // label="Message"
+            multiline
+            rows={4}
+            value={message}
+            variant="outlined"
+            placeholder="Add a message"
+            // className={classes.inputs}
+            onChange={e => {
+              setMessage(e.target.value)
+            }}
+            style={{
+              flex: 1,
               fontSize: '14px',
-              lineHeight: '18px',
-            }}>{attachment.name}</p>
-            <FontAwesomeIcon
-              style={{
-                margin: '0 20px 0 0',
-                cursor: 'pointer'
-              }}
-              icon={faTimes}
-              onClick={() => {
+              fontFamily: 'Open Sans',
+              minWidth: '284px',
+              // padding: '16px 14px'
+            }}
+          />
+          {attachment &&
+            <Chip
+              // icon={<FaceIcon />}
+              label={attachment.name}
+              // onClick={handleClick}
+              className={classes.chip}
+              onDelete={() => {
                 setAttachment(null)
 
-              }} />
-          </>
-          }
-          <FontAwesomeIcon
-            icon={faMicrophone}
-            style={{
-              color: '#333',
-              cursor: 'pointer'
-            }} />
-          <FontAwesomeIcon
-            icon={faMapMarkerAlt}
-            style={{
-              color: '#333',
-              cursor: 'pointer',
-              margin: '0 10px'
-            }} />
+              }}
+            />
 
-          <FontAwesomeIcon
-            icon={faPaperclip}
-            onClick={() => buildFileSelector()
-              // setAttachment()
-            }
-            style={{
-              color: '#333',
-              cursor: 'pointer',
-            }} />
+          }
+          <div style={{
+            display: 'flex',
+            position: 'absolute',
+            right: '10px',
+            bottom: '0px'
+          }}>
+            <Tooltip title="Add a voice memo" aria-label="add voice" style={{
+              margin: '0 10px'
+            }}>
+
+              <span>
+
+
+                <FontAwesomeIcon
+                  icon={faMicrophone}
+                  style={{
+                    color: '#333',
+                    cursor: 'pointer'
+                  }} />
+              </span>
+            </Tooltip>
+
+            <Tooltip title="Add a file" aria-label="add file">
+              <span>
+
+                <FontAwesomeIcon
+                  icon={faPaperclip}
+                  onClick={() => buildFileSelector()
+                    // setAttachment()
+                  }
+                  style={{
+                    color: '#333',
+                    cursor: 'pointer',
+                  }} />
+              </span>
+            </Tooltip>
+          </div>
+
+
         </div>
+
       </div>
       <div
         className="checkboxes"
@@ -278,7 +296,7 @@ const SendMessage = () => {
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(284px, 250px))',
           alignItems: 'center',
-          // margin: '18px 0 18px 120px'
+          // margin: '18p x 0 18px 120px'
         }}>
         <div>
           <Checkbox
@@ -287,11 +305,6 @@ const SendMessage = () => {
               setAcknowledge(!acknowledge)
             }}
             className={classes.checkboxes}
-            // style={{
-            //   marginRight: '4px',
-            //   fontSize: '14px',
-            //   fontFamily: 'Open Sans'
-            // }}
             size="small"
             name="acknowledge"
             id="acknowledge"
