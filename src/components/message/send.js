@@ -42,6 +42,7 @@ const SendMessage = () => {
     acknowledge,
     enableRepeat,
     setRepeatNumber,
+    selectedSecGroup,
     repeat,
     setAttachment
   } = useContext(MessageContext)
@@ -65,6 +66,29 @@ const SendMessage = () => {
   }
 
   const useStyles = makeStyles(() => ({
+    text: {
+      '& .MuiOutlinedInput-root': {
+        '& fieldset': {
+          // borderColor: '#f39200',
+        },
+        '&:hover fieldset': {
+          // borderColor: '#f39200',
+        },
+        '&.Mui-focused fieldset': {
+          borderColor: '#f39200',
+        },
+      },
+    },
+    select: {
+      '&.MuiOutlinedInput-root': {
+        '&.Mui-focused': {
+          borderColor: '#f39200',
+        },
+        '&.Mui-focused fieldset': {
+          borderColor: '#f39200',
+        },
+      },
+    },
     color: {
       backgroundColor: '#f39200',
       color: '#ffffff',
@@ -72,8 +96,14 @@ const SendMessage = () => {
       fontSize: '14px',
       fontWeight: 600,
       lineHeight: 1.14,
+      padding: '10px 23px',
       letterSpacing: '1.28px',
       '&:hover': {
+        opacity: .7,
+        backgroundColor: '#f39200'
+      },
+      '&:active': {
+        opacity: .7,
         backgroundColor: '#f39200'
       }
     },
@@ -110,7 +140,10 @@ const SendMessage = () => {
   //       // },
   //     },
   //   }))(Button);
-
+  console.log({ selectedSecGroup, opposite: !selectedSecGroup, message: !message.trim() })
+  console.log((!message.trim() || !selectedSecGroup) ?
+    true :
+    false)
   const classes = useStyles();
   return (
     <form
@@ -133,7 +166,11 @@ const SendMessage = () => {
         <h3 className="title">New Broadcast Message</h3>
         <Button
           // type="button"
-          disabled={!message ? true : false}
+          disabled={
+            !message.trim() || !selectedSecGroup ?
+              true :
+              false
+          }
           onClick={() => sendBroadcast()}
           className={classes.color}
           // className={message ? "sendButton" : 'disabledSendButton'}
@@ -172,11 +209,11 @@ const SendMessage = () => {
               fontSize: '14px',
               textIndent: '6px',
               minWidth: '284px'
-
             }}
+            className={classes.select}
           >
-            <MenuItem value="none">None</MenuItem>
             <MenuItem value='default' disabled>{secGroups.length > 1 ? 'Select Security Groups' : 'Getting Security Groups'}</MenuItem>
+            <MenuItem value="all">All</MenuItem>
             <MenuItem value="NETWORK">Whole network</MenuItem>
             {secGroups && secGroups?.map((secgroup, idx) => {
               return (
@@ -227,17 +264,22 @@ const SendMessage = () => {
             onChange={e => {
               setMessage(e.target.value)
             }}
+            className={classes.text}
             style={{
               flex: 1,
               fontSize: '14px',
               fontFamily: 'Open Sans',
               minWidth: '284px',
+              // height: '160px'
               // padding: '16px 14px'
             }}
           />
           {attachment &&
             <Chip
-              // icon={<FaceIcon />}
+              // icon={<FaceIcon />
+              style={{
+                borderRadius: '2px'
+              }}
               label={attachment.name}
               // onClick={handleClick}
               className={classes.chip}
@@ -252,19 +294,17 @@ const SendMessage = () => {
             display: 'flex',
             position: 'absolute',
             right: '10px',
-            bottom: '0px'
+            bottom: '5px'
           }}>
             <Tooltip title="Add a voice memo" aria-label="add voice" style={{
               margin: '0 10px'
             }}>
-
               <span>
-
-
                 <FontAwesomeIcon
+                  size="lg"
                   icon={faMicrophone}
                   style={{
-                    color: '#333',
+                    color: 'var(--secondary)',
                     cursor: 'pointer'
                   }} />
               </span>
@@ -274,12 +314,13 @@ const SendMessage = () => {
               <span>
 
                 <FontAwesomeIcon
+                  size="lg"
                   icon={faPaperclip}
                   onClick={() => buildFileSelector()
                     // setAttachment()
                   }
                   style={{
-                    color: '#333',
+                    color: 'var(--secondary)',
                     cursor: 'pointer',
                   }} />
               </span>

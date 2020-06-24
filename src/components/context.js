@@ -26,7 +26,7 @@ const MessageContextProvider = ({ children, location }) => {
   const [repeatNum, setRepeatNumber] = useState(false)
   const [freq, setFreq] = useState(false)
   const [attachment, setAttachment] = useState(false)
-  const [selectedSecGroup, setSelectedSecGroup] = useState(false)
+  const [selectedSecGroup, setSelectedSecGroup] = useState(null)
 
   // recieve token via search params, send as authorization header
   const sendAuthorization = async () => {

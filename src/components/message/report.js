@@ -112,9 +112,6 @@ const Row = ({ user }, idx) => {
   )
 }
 
-
-
-
 const Report = ({ id }) => {
   const { report, secGroups, sendReportStatus, downloadReport, sentBroadcasts, sendStatus } = useContext(MessageContext)
   const [page, setPage] = useState(0)

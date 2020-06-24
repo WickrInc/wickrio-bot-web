@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react"
 import { Link } from "gatsby"
 import { MessageContext } from "../context"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronLeft, faChevronDown, faChevronRight, faLessThanEqual } from '@fortawesome/free-solid-svg-icons'
+import { faChevronLeft, faChevronDown, faChevronRight, faLessThanEqual, faCog, faRedo } from '@fortawesome/free-solid-svg-icons'
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Collapse from '@material-ui/core/Collapse';
@@ -212,10 +212,32 @@ const SentMessages = () => {
         overflow: 'scroll'
       }}
     >
-      <h3
-        className="title">Sent Messages</h3>
-      <p className="subtitle">Click on the message to view detailed reports</p>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between'
+      }}>
+        <div>
+          <h3
+            className="title">Sent Messages</h3>
+          <p className="subtitle">Click on the message to view detailed reports</p>
+        </div>
+        <div className="Rectangle"
+          style={{
+            borderRadius: '4px',
+            border: 'solid 1px var(--bg-dark)',
+            backgroundColor: 'var(--light)'
+          }}
+          onClick={() => {
+            sendStatus(page, size)
 
+          }}
+        >
+          <FontAwesomeIcon icon={faRedo} style={{
+            color: '#6c6c6c',
+            alignSelf: 'center'
+          }} />
+        </div>
+      </div>
 
 
       <TableContainer component={Paper} className={classes.root}>
@@ -253,7 +275,7 @@ const SentMessages = () => {
                 align="center">Failed</TableCell>
               <TableCell
                 className={classes.theader}
-                align="center">Acknowledged</TableCell>
+                align="center">Acked</TableCell>
               <TableCell
                 className={classes.theader}
                 align="center">Ignored</TableCell>
@@ -379,12 +401,19 @@ const SentMessages = () => {
 
         </table> */}
 
-      {!sentBroadcasts.list[0] && <p style={{
-        backgroundColor: '#f2f3f5',
-        padding: '24px 0',
-        textAlign: "center"
-      }}>send a broadcast message to view a detailed report here
-          </p>}
+      {!sentBroadcasts.list[0] &&
+        <p style={{
+          backgroundColor: '#f2f3f5',
+          padding: '24px 0',
+          textAlign: "center",
+          fontSize: '14px',
+          fontWeight: 600,
+          color: 'var(--text-light)',
+          fontFamily: 'Open Sans'
+        }}>
+          Send a broadcast message to view a detailed report here
+        </p>
+      }
 
 
       {sentBroadcasts.list.length > 0 &&
