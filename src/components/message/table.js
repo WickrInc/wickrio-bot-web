@@ -18,6 +18,7 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import { Tooltip } from "@material-ui/core"
 
 
 const Row = ({ broadcast }, key) => {
@@ -63,7 +64,7 @@ const Row = ({ broadcast }, key) => {
             color: 'var(--text-light)',
             lineHeight: 1.33
           }}>
-            {new Date(broadcast.when_sent).toLocaleDateString()}
+            {broadcast.when_sent ? new Date(broadcast.when_sent).toLocaleDateString() : ''}
           </p>
 
           <p style={{
@@ -74,7 +75,7 @@ const Row = ({ broadcast }, key) => {
             color: 'var(--text-light)',
             lineHeight: 1.33
           }}>
-            {new Date(broadcast.when_sent).toLocaleTimeString()}
+            {broadcast.when_sent ? new Date(broadcast.when_sent).toLocaleTimeString() : ''}
           </p>
         </div>
       </div>
@@ -221,22 +222,24 @@ const SentMessages = () => {
             className="title">Sent Messages</h3>
           <p className="subtitle">Click on the message to view detailed reports</p>
         </div>
-        <div className="Rectangle"
-          style={{
-            borderRadius: '4px',
-            border: 'solid 1px var(--bg-dark)',
-            backgroundColor: 'var(--light)'
-          }}
-          onClick={() => {
-            sendStatus(page, size)
+        <Tooltip title="Refresh table with current statistics" aria-label="add file">
+          <div className="Rectangle"
+            style={{
+              borderRadius: '4px',
+              border: 'solid 1px var(--bg-dark)',
+              backgroundColor: 'var(--light)'
+            }}
+            onClick={() => {
+              sendStatus(page, size)
 
-          }}
-        >
-          <FontAwesomeIcon icon={faRedo} style={{
-            color: '#6c6c6c',
-            alignSelf: 'center'
-          }} />
-        </div>
+            }}
+          >
+            <FontAwesomeIcon icon={faRedo} style={{
+              color: '#6c6c6c',
+              alignSelf: 'center'
+            }} />
+          </div>
+        </Tooltip>
       </div>
 
 

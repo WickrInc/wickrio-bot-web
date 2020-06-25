@@ -111,7 +111,7 @@ const MessageContextProvider = ({ children, location }) => {
                 ignored: 0
 
               },
-              target: selectedSecGroup ? secGroups.find(group => group.id === selectedSecGroup).id : 'network',
+              target: selectedSecGroup ? secGroups.find(group => group.id === selectedSecGroup)?.id : 'network',
               when_sent: new Date().toLocaleString()
             }, ...sentBroadcasts.list,
             ]
@@ -130,7 +130,7 @@ const MessageContextProvider = ({ children, location }) => {
                 read: 0,
                 ignored: 0
               },
-              target: selectedSecGroup ? secGroups.find(group => group.id === selectedSecGroup).id : 'network',
+              target: selectedSecGroup ? secGroups.find(group => group.id === selectedSecGroup)?.id : 'network',
               when_sent: new Date().toLocaleString()
             }]
           })

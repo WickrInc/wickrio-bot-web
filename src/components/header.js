@@ -55,7 +55,14 @@ const Header = ({ siteTitle }) => {
           </Link>
           {/* dropdown for account options */}
           <h3 style={{
-            margin: 0
+            margin: 0,
+            fontFamily: 'Open Sans',
+            fontSize: '14px',
+            fontWeight: 600,
+            lineHeight: 1.14,
+            letterSpacing: '1.28px',
+            textAlign: 'center',
+            color: 'var(--dark)'
           }}>
             {user?.email
               || 'Unauthenticated'}

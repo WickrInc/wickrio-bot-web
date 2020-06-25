@@ -31,7 +31,25 @@ const Row = ({ user }, idx) => {
   });
   const classes = useRowStyles();
   const [open, setOpen] = useState(false)
+  let sentdate = new Date(
+    user.sent_datetime
+    // ?.replace(/ /g, "T")
+  ).toLocaleDateString()
 
+  let senttime = new Date(
+    user.sent_datetime
+    // ?.replace(/ /g, "T")
+  ).toLocaleTimeString()
+
+  let readtime = new Date(
+    user.read_datetime
+    // ?.replace(/ /g, "T")
+  ).toLocaleTimeString()
+  let readdate = new Date(
+    user.read_datetime
+    // ?.replace(/ /g, "T")
+  ).toLocaleDateString()
+  console.log(user.sent_datetime)
   return (
     <TableRow className={classes.root} key={idx}>
       {/* <TableCell>
@@ -69,7 +87,7 @@ const Row = ({ user }, idx) => {
             color: 'var(--text-light)',
             lineHeight: 1.33
           }}>
-            {new Date(user.sent_datetime).toLocaleDateString()}
+            {user.sent_datetime ? sentdate : ''}
           </p>
 
           <p style={{
@@ -80,7 +98,7 @@ const Row = ({ user }, idx) => {
             color: 'var(--text-light)',
             lineHeight: 1.33
           }}>
-            {new Date(user.sent_datetime).toLocaleTimeString()}
+            {user.sent_datetime ? senttime : ''}
           </p>
         </div>
       </TableCell>
@@ -94,7 +112,7 @@ const Row = ({ user }, idx) => {
             color: 'var(--text-light)',
             lineHeight: 1.33
           }}>
-            {user.read_datetime ? new Date(user.read_datetime).toLocaleDateString() : 'none'}
+            {user.read_datetime ? readdate : ''}
           </p>
 
           <p style={{
@@ -105,9 +123,10 @@ const Row = ({ user }, idx) => {
             color: 'var(--text-light)',
             lineHeight: 1.33
           }}>
-            {user.read_datetime ? new Date(user.read_datetime).toLocaleTimeString() : 'none'}
+            {user.read_datetime ? readtime : ''}
           </p>
-        </div></TableCell>
+        </div>
+      </TableCell>
     </TableRow>
   )
 }
@@ -117,7 +136,7 @@ const Report = ({ id }) => {
   const [page, setPage] = useState(0)
   const [size, setSize] = useState(25)
   const [order, setOrder] = React.useState('desc');
-  const [orderBy, setOrderBy] = React.useState('when_sent');
+  const [orderBy, setOrderBy] = React.useState('status');
   const [selected, setSelected] = React.useState([]);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(25);
@@ -200,12 +219,18 @@ const Report = ({ id }) => {
     // no way to get accumulated number of records 
     sendReportStatus(id, 0, 25)
   }, [])
+  let total =
+    report?.broadcast?.summary?.failed +
+    report?.broadcast?.summary?.acked +
+    report?.broadcast?.summary?.sent +
+    report?.broadcast?.summary?.ignored +
+    report?.broadcast?.summary?.pending
 
   // const broadcast = sentBroadcasts.find(broadcast => broadcast.message_id === id)
   const secGroup = secGroups.find(group => group.id === report?.broadcast?.target) || { name: 'network' }
   const date = new Date(report?.broadcast?.when_sent)
   let from = page == 0 ? 1 : page * size + 1
-  let to = report?.broadcast?.report?.length < size ? report.broadcast.report.length : report?.broadcast?.report.length * (page + 1)
+  let to = report?.broadcast?.report?.length < size ? total : report?.broadcast?.report.length * (page + 1)
 
   return (
     <>
@@ -326,9 +351,9 @@ const Report = ({ id }) => {
                     // padding={headCell.disablePadding ? 'none' : 'default'}
                     >
                       <TableSortLabel
-                        active={orderBy === 'when_sent'}
-                        direction={orderBy === 'when_sent' ? order : 'asc'}
-                        onClick={createSortHandler('when_sent')}
+                        active={orderBy === 'status'}
+                        direction={orderBy === 'status' ? order : 'asc'}
+                        onClick={createSortHandler('status')}
                       >
                         Status
                         </TableSortLabel>
@@ -393,7 +418,7 @@ const Report = ({ id }) => {
                   fontSize: '14px'
                   // cursor: 'pointer'
                 }}
-                >{from} - {to} of {report.broadcast.report.length}</p>
+                >{from} - {to} of {total}</p>
 
                 <FontAwesomeIcon
                   style={{
@@ -402,7 +427,7 @@ const Report = ({ id }) => {
                   }}
                   icon={faChevronRight}
                   onClick={() => {
-                    if (to < report.broadcast.report.length) {
+                    if (to < total) {
                       getNextReportPage(report.messageID, page, size)
                     }
                   }} />

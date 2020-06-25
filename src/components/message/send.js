@@ -68,6 +68,7 @@ const SendMessage = () => {
   const useStyles = makeStyles(() => ({
     text: {
       '& .MuiOutlinedInput-root': {
+        fontSize: '14px',
         '& fieldset': {
           // borderColor: '#f39200',
         },
@@ -81,6 +82,7 @@ const SendMessage = () => {
     },
     select: {
       '&.MuiOutlinedInput-root': {
+        fontSize: '14px',
         '&.Mui-focused': {
           borderColor: '#f39200',
         },
@@ -123,6 +125,11 @@ const SendMessage = () => {
       borderRadius: '4px',
       border: 'solid 1px var(--bg-light)',
       backgroundColor: 'var(--light)'
+    },
+    icon: {
+      '&:hover': {
+        color: 'var(--secondary)'
+      }
     },
     chip: {
       bottom: '8px',
@@ -213,7 +220,6 @@ const SendMessage = () => {
             className={classes.select}
           >
             <MenuItem value='default' disabled>{secGroups.length > 1 ? 'Select Security Groups' : 'Getting Security Groups'}</MenuItem>
-            <MenuItem value="all">All</MenuItem>
             <MenuItem value="NETWORK">Whole network</MenuItem>
             {secGroups && secGroups?.map((secgroup, idx) => {
               return (
@@ -304,9 +310,10 @@ const SendMessage = () => {
                   size="lg"
                   icon={faMicrophone}
                   style={{
-                    color: 'var(--secondary)',
                     cursor: 'pointer'
-                  }} />
+                  }}
+                  className={classes.icon}
+                />
               </span>
             </Tooltip>
 
@@ -320,9 +327,10 @@ const SendMessage = () => {
                     // setAttachment()
                   }
                   style={{
-                    color: 'var(--secondary)',
                     cursor: 'pointer',
-                  }} />
+                  }}
+                  className={classes.icon}
+                />
               </span>
             </Tooltip>
           </div>
@@ -358,7 +366,7 @@ const SendMessage = () => {
         <div>
 
 
-          <Checkbox
+          {/* <Checkbox
             disabled
             checked={repeat}
             onChange={e => {
@@ -372,7 +380,7 @@ const SendMessage = () => {
           />
           <label
             className="smlabels"
-            htmlFor="repear">Repeat</label>
+            htmlFor="repear">Repeat</label> */}
         </div>
       </div>
       {/* <div style={{
