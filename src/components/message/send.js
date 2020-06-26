@@ -147,10 +147,10 @@ const SendMessage = () => {
   //       // },
   //     },
   //   }))(Button);
-  console.log({ selectedSecGroup, opposite: !selectedSecGroup, message: !message.trim() })
-  console.log((!message.trim() || !selectedSecGroup) ?
-    true :
-    false)
+  // console.log({ selectedSecGroup, opposite: !selectedSecGroup, message: !message.trim() })
+  // console.log((!message.trim() || !selectedSecGroup) ?
+  //   true :
+  //   false)
   const classes = useStyles();
   return (
     <form
@@ -197,7 +197,11 @@ const SendMessage = () => {
 
         <InputLabel className={classes.labels} id="secgroup-label">Send To</InputLabel>
 
-        <FormControl variant="outlined" className={classes.formControl}>
+        <FormControl
+          variant="outlined"
+          style={{
+            // width: '100%'
+          }}>
           <Select
             labelId="secgroup-label"
             name="secgroup"
@@ -211,13 +215,11 @@ const SendMessage = () => {
             }}
             // label="secgroup"
             style={{
-              width: '100%',
               fontFamily: 'Open Sans',
               fontSize: '14px',
               textIndent: '6px',
-              minWidth: '284px'
             }}
-            className={classes.select}
+            className={classes.select, "minWidth"}
           >
             <MenuItem value='default' disabled>{secGroups.length > 1 ? 'Select Security Groups' : 'Getting Security Groups'}</MenuItem>
             <MenuItem value="NETWORK">Whole network</MenuItem>
@@ -246,14 +248,13 @@ const SendMessage = () => {
             padding: '4px 20px',
           }}>Message</label>
         <div style={{
-          flex: 1,
-          fontSize: '14px',
           fontFamily: 'Open Sans',
-          minWidth: '284px',
+          flex: 1,
           position: 'relative',
-          display: 'flex'
+          maxWidth: 750
           // padding: '16px 14px'
-        }}>
+        }}
+          className="minWidth">
 
           <TextField
             id="text"
@@ -270,13 +271,13 @@ const SendMessage = () => {
             onChange={e => {
               setMessage(e.target.value)
             }}
-            className={classes.text}
+            className={classes.text, "minWidth"}
             style={{
               flex: 1,
               fontSize: '14px',
               fontFamily: 'Open Sans',
-              minWidth: '284px',
               // height: '160px'
+
               // padding: '16px 14px'
             }}
           />

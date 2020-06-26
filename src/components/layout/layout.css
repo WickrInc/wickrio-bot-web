@@ -21,6 +21,8 @@ select {
   min-width: 284px;
   cursor: pointer;
 }
+
+
 .Rectangle {
   width: 40px;
   height: 36px;
@@ -946,6 +948,16 @@ pre tt:before,
 pre tt:after {
 content: "";
 }
+.minWidth {
+  display: flex;
+  min-width: 210px;
+}
+@media only screen and (min-width: 481px) {
+  .minWidth {
+    /* width: 100%; */
+  }
+}
+
 @media only screen and (max-width: 480px) {
 html {
 font-size: 100%;

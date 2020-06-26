@@ -122,7 +122,7 @@ const SentMessages = () => {
   const [selected, setSelected] = React.useState([]);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(25);
-
+  // console.log({ sentBroadcasts })
   const useRowStyles = makeStyles({
     root: {
       margin: 0,

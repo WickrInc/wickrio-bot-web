@@ -31,25 +31,8 @@ const Row = ({ user }, idx) => {
   });
   const classes = useRowStyles();
   const [open, setOpen] = useState(false)
-  let sentdate = new Date(
-    user.sent_datetime
-    // ?.replace(/ /g, "T")
-  ).toLocaleDateString()
 
-  let senttime = new Date(
-    user.sent_datetime
-    // ?.replace(/ /g, "T")
-  ).toLocaleTimeString()
-
-  let readtime = new Date(
-    user.read_datetime
-    // ?.replace(/ /g, "T")
-  ).toLocaleTimeString()
-  let readdate = new Date(
-    user.read_datetime
-    // ?.replace(/ /g, "T")
-  ).toLocaleDateString()
-  console.log(user.sent_datetime)
+  console.log(user)
   return (
     <TableRow className={classes.root} key={idx}>
       {/* <TableCell>
@@ -57,14 +40,15 @@ const Row = ({ user }, idx) => {
           {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
         </IconButton>
       </TableCell> */}
+
       <TableCell align="center">
         <p className="sentmessagereport">
-          {user.status}
+          {user.user}
         </p>
       </TableCell>
       <TableCell align="center">
         <p className="sentmessagereport">
-          {user.user}
+          {user.status}
         </p>
       </TableCell>
 
@@ -87,7 +71,7 @@ const Row = ({ user }, idx) => {
             color: 'var(--text-light)',
             lineHeight: 1.33
           }}>
-            {user.sent_datetime ? sentdate : ''}
+            {user.sent_date ? user.sent_date : ''}
           </p>
 
           <p style={{
@@ -98,7 +82,7 @@ const Row = ({ user }, idx) => {
             color: 'var(--text-light)',
             lineHeight: 1.33
           }}>
-            {user.sent_datetime ? senttime : ''}
+            {user.sent_time ? user.sent_time : ''}
           </p>
         </div>
       </TableCell>
@@ -112,7 +96,7 @@ const Row = ({ user }, idx) => {
             color: 'var(--text-light)',
             lineHeight: 1.33
           }}>
-            {user.read_datetime ? readdate : ''}
+            {user.read_date ? user.read_date : ''}
           </p>
 
           <p style={{
@@ -123,7 +107,7 @@ const Row = ({ user }, idx) => {
             color: 'var(--text-light)',
             lineHeight: 1.33
           }}>
-            {user.read_datetime ? readtime : ''}
+            {user.read_time ? user.read_time : ''}
           </p>
         </div>
       </TableCell>
@@ -344,7 +328,9 @@ const Report = ({ id }) => {
               <Table stickyHeader aria-label="sticky collapsible table">
                 <TableHead >
                   <TableRow >
-
+                    <TableCell
+                      className={classes.theader}
+                      align="center">Name</TableCell>
                     <TableCell
                       className={classes.theader}
                     // align={headCell.numeric ? 'right' : 'left'}
@@ -358,9 +344,6 @@ const Report = ({ id }) => {
                         Status
                         </TableSortLabel>
                     </TableCell>
-                    <TableCell
-                      className={classes.theader}
-                      align="center">Name</TableCell>
                     <TableCell
                       className={classes.theader}
                       align="center">Message</TableCell>

@@ -35,7 +35,7 @@ const Layout = ({ children, location }) => {
         style={{
           margin: `0 auto`,
           maxWidth: 960,
-          minWidth: 360,
+          // minWidth: 360,
           padding: `0 1.0875rem 1.45rem`,
           display: 'flex',
           flexDirection: 'column'
@@ -54,7 +54,7 @@ const Layout = ({ children, location }) => {
           style={{
             margin: `5px auto 7px auto`,
             maxWidth: 960,
-            minWidth: 330,
+            // minWidth: 330,
             fontFamily: 'Open Sans',
             fontSize: '14px'
           }}
