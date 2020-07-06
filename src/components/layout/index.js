@@ -63,7 +63,7 @@ const Layout = ({ children, location }) => {
 
           © {new Date().getFullYear()},
           {` `}
-          <a href="https://www.wickr.com">Wickr</a>
+          <a href="https://www.wickr.com" target="_blank">Wickr</a>
         </div>
       </footer>
     </MessageContextProvider>

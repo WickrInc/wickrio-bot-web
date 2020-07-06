@@ -12,6 +12,8 @@ import { faPaperclip, faMicrophone, faMapMarkerAlt, faTimes } from '@fortawesome
 import { Button, makeStyles, TextField, FormControlLabel, Checkbox } from '@material-ui/core';
 import Chip from '@material-ui/core/Chip';
 import Tooltip from '@material-ui/core/Tooltip';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
 
 let repeatlist = [{
   value: 2,
@@ -25,6 +27,7 @@ let freqlist = [{
 
 // add ALL GROUPS / WHOLE NETWORK
 // be able to see uplaoded file preview
+
 const SendMessage = () => {
   const {
     user,
@@ -68,6 +71,7 @@ const SendMessage = () => {
   const useStyles = makeStyles(() => ({
     text: {
       '& .MuiOutlinedInput-root': {
+        height: '100%',
         fontSize: '14px',
         '& fieldset': {
           // borderColor: '#f39200',
@@ -82,6 +86,7 @@ const SendMessage = () => {
     },
     select: {
       '&.MuiOutlinedInput-root': {
+        height: '48px',
         fontSize: '14px',
         '&.Mui-focused': {
           borderColor: '#f39200',
@@ -154,45 +159,44 @@ const SendMessage = () => {
   const classes = useStyles();
   return (
     <form
-      className="border"
+      className={`grid border`}
       style={{
-        display: 'flex',
-        flexDirection: 'column',
-        padding: '16px 20px',
+        padding: '20px 16px',
         // minWidth: '375px'
-        // minWidth: '350px'
+        // minWidth: '350px''
       }}
     >
-      <div style={{
+      {/* <div style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
         marginBottom: '14px'
-      }}>
+      }}> */}
 
-        <h3 className="title">New Broadcast Message</h3>
-        <Button
-          // type="button"
-          disabled={
-            !message.trim() || !selectedSecGroup ?
-              true :
-              false
-          }
-          onClick={() => sendBroadcast()}
-          className={classes.color}
-          // className={message ? "sendButton" : 'disabledSendButton'}
-          variant="contained"
-        // color="primary"
-        >Send</Button>
-      </div>
+      <h3 className="title">New Broadcast Message</h3>
+      <Button
+        // type="button"
+        disabled={
+          !message.trim() || !selectedSecGroup ?
+            true :
+            false
+        }
+        onClick={() => sendBroadcast()}
+        className={`${classes.color} sentButton`}
+        // className={message ? "sendButton" : 'disabledSendButton'}
+        variant="contained"
+      // color="primary"
+      >Send</Button>
+      {/* </div> */}
 
 
 
       <div style={{
         display: 'flex',
         alignItems: 'center',
-        marginBottom: '12px',
-        flexWrap: 'wrap'
+        // marginBottom: '12px',
+        flexWrap: 'wrap',
+        gridColumn: '1/3'
       }}>
 
         <InputLabel className={classes.labels} id="secgroup-label">Send To</InputLabel>
@@ -219,11 +223,11 @@ const SendMessage = () => {
               fontSize: '14px',
               textIndent: '6px',
             }}
-            className={classes.select, "minWidth"}
+            className={`${classes.select} minWidth`}
           >
             <MenuItem value='default' disabled>{secGroups.length > 1 ? 'Select Security Groups' : 'Getting Security Groups'}</MenuItem>
             <MenuItem value="NETWORK">Whole network</MenuItem>
-            {secGroups && secGroups?.map((secgroup, idx) => {
+            {secGroups > 0 && secGroups?.map((secgroup, idx) => {
               return (
                 <MenuItem value={secgroup.id} key={idx}>{secgroup.name}</MenuItem>
               )
@@ -238,7 +242,8 @@ const SendMessage = () => {
         display: 'flex',
         position: 'relative',
         alignItems: 'center',
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
+        gridColumn: '1/3'
       }}>
 
         <label
@@ -251,7 +256,6 @@ const SendMessage = () => {
           fontFamily: 'Open Sans',
           flex: 1,
           position: 'relative',
-          maxWidth: 750
           // padding: '16px 14px'
         }}
           className="minWidth">
@@ -263,7 +267,7 @@ const SendMessage = () => {
 
             // label="Message"
             multiline
-            rows={4}
+            rows={7}
             value={message}
             variant="outlined"
             placeholder="Add a message"
@@ -271,13 +275,12 @@ const SendMessage = () => {
             onChange={e => {
               setMessage(e.target.value)
             }}
-            className={classes.text, "minWidth"}
+            className={`${classes.text} minWidth`}
             style={{
               flex: 1,
               fontSize: '14px',
               fontFamily: 'Open Sans',
               // height: '160px'
-
               // padding: '16px 14px'
             }}
           />
@@ -303,12 +306,12 @@ const SendMessage = () => {
             right: '10px',
             bottom: '5px'
           }}>
-            <Tooltip title="Add a voice memo" aria-label="add voice" style={{
-              margin: '0 10px'
+            {/* <Tooltip title="Add a voice memo" aria-label="add voice" style={{
+              margin: '0 16px'
             }}>
               <span>
                 <FontAwesomeIcon
-                  size="lg"
+                  size="1x"
                   icon={faMicrophone}
                   style={{
                     cursor: 'pointer'
@@ -316,13 +319,13 @@ const SendMessage = () => {
                   className={classes.icon}
                 />
               </span>
-            </Tooltip>
+            </Tooltip> */}
 
             <Tooltip title="Add a file" aria-label="add file">
               <span>
 
                 <FontAwesomeIcon
-                  size="lg"
+                  size="1x"
                   icon={faPaperclip}
                   onClick={() => buildFileSelector()
                     // setAttachment()
@@ -343,12 +346,11 @@ const SendMessage = () => {
       <div
         className="checkboxes"
         style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(284px, 250px))',
-          alignItems: 'center',
-          // margin: '18p x 0 18px 120px'
+          gridColumn: '1/3'
         }}>
         <div>
+
+
           <Checkbox
             checked={acknowledge}
             onChange={e => {
@@ -359,6 +361,11 @@ const SendMessage = () => {
             name="acknowledge"
             id="acknowledge"
             color="primary"
+            style={{
+              // padding: '0 8px',
+              height: 14,
+              width: 14
+            }}
           />
           <label
             className="smlabels"

@@ -3,6 +3,8 @@ import PropTypes from "prop-types"
 import React, { useContext, useEffect } from "react"
 import { MessageContext } from "./context"
 import Logo from "./images/logo"
+import { faChevronDown, faUserCircle } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const Header = ({ siteTitle }) => {
   const {
@@ -54,19 +56,54 @@ const Header = ({ siteTitle }) => {
             <Logo />
           </Link>
           {/* dropdown for account options */}
-          <h3 style={{
-            margin: 0,
-            fontFamily: 'Open Sans',
-            fontSize: '14px',
-            fontWeight: 600,
-            lineHeight: 1.14,
-            letterSpacing: '1.28px',
-            textAlign: 'center',
-            color: 'var(--dark)'
+          <div style={{
+            display: 'flex',
+            alignItems: 'center'
           }}>
-            {user?.email
-              || 'Unauthenticated'}
-          </h3>
+            <FontAwesomeIcon
+              style={{
+                margin: '0 13px 0 0',
+                color: '#f39200',
+                cursor: 'pointer',
+                height: '24px',
+                width: '24px'
+              }}
+              // size="lg"
+              icon={faUserCircle}
+              onClick={() => {
+                // getLastReportPage(report.messageID, page, size)
+              }}
+            />
+            <h3 className="username" style={{
+              margin: 0,
+              fontFamily: 'Open Sans',
+              fontSize: '14px',
+              fontWeight: 600,
+              lineHeight: 1.14,
+              letterSpacing: '1.28px',
+              textAlign: 'center',
+              color: 'var(--dark)'
+            }}>
+              {user?.email
+                || 'Unauthenticated'}
+            </h3>
+
+            <FontAwesomeIcon
+              style={{
+                // margin: '0 20px 0 0',
+                height: '20px',
+                width: '20px',
+                cursor: 'pointer'
+              }}
+              icon={faChevronDown}
+              onClick={() => {
+                // getLastReportPage(report.messageID, page, size)
+              }}
+            />
+
+          </div>
+
+
         </div>
 
       </nav>

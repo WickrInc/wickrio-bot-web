@@ -64,7 +64,7 @@ const Row = ({ broadcast }, key) => {
             color: 'var(--text-light)',
             lineHeight: 1.33
           }}>
-            {broadcast.when_sent ? new Date(broadcast.when_sent).toLocaleDateString() : ''}
+            {broadcast.when_sent ? new Date(broadcast.when_sent).toLocaleDateString().replace(/\//g, '-') : ''}
           </p>
 
           <p style={{
@@ -173,7 +173,7 @@ const SentMessages = () => {
   let from = page == 0 ? 1 : page * size + 1
 
 
-  let to = sentBroadcasts.list.length < size ? sentBroadcasts.max_entries : sentBroadcasts.list.length * (page + 1)
+  let to = sentBroadcasts?.list?.length < size ? sentBroadcasts.max_entries : sentBroadcasts?.list?.length * (page + 1)
 
 
   const createSortHandler = (property) => (event) => {
@@ -205,7 +205,7 @@ const SentMessages = () => {
     });
     return stabilizedThis.map((el) => el[0]);
   }
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, sentBroadcasts.list.length - page * rowsPerPage);
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, sentBroadcasts?.list?.length - page * rowsPerPage);
   return (
     <section
       className="sentsection"
@@ -287,10 +287,10 @@ const SentMessages = () => {
                 align="center">Sent</TableCell>
             </TableRow>
           </TableHead>
-          {sentBroadcasts.list[0] &&
+          {sentBroadcasts?.list && sentBroadcasts?.list[0] &&
             <TableBody>
 
-              {sentBroadcasts.list[0] &&
+              {sentBroadcasts?.list && sentBroadcasts?.list[0] &&
 
                 stableSort(sentBroadcasts.list, getComparator(order, orderBy))
                   // sentBroadcasts.list
@@ -404,7 +404,7 @@ const SentMessages = () => {
 
         </table> */}
 
-      {!sentBroadcasts.list[0] &&
+      {sentBroadcasts.list < 1 &&
         <p style={{
           backgroundColor: '#f2f3f5',
           padding: '24px 0',
@@ -419,45 +419,48 @@ const SentMessages = () => {
       }
 
 
-      {sentBroadcasts.list.length > 0 &&
+      {sentBroadcasts?.list?.length > 0 &&
         <div style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'flex-end',
           margin: '10px 32px'
         }}>
-
-          <FontAwesomeIcon
-            style={{
-              // margin: '0 20px 0 0',
-              cursor: 'pointer'
-            }}
-            icon={faChevronLeft}
-            onClick={() => {
-              getLastReportPage(page, size)
-            }}
-          />
-          {/* <p>{page == 0 ? ((page == 0 ? 1 : page) * size - 24) : }-{Math.min(sentBroadcasts.list.length, (page == 0 ? 1 : page) * size)} of {sentBroadcasts.max_entries}</p> */}
-          {/* <p>{(page == 0 ? 1 : page) * size - sentBroadcasts.list.length + 1}-{Math.min(sentBroadcasts.list.length, (page == 0 ? 1 : page) * size)} of {sentBroadcasts.max_entries}</p> */}
+          {sentBroadcasts?.list?.length > 25 &&
+            <FontAwesomeIcon
+              style={{
+                // margin: '0 20px 0 0',
+                cursor: 'pointer'
+              }}
+              icon={faChevronLeft}
+              onClick={() => {
+                getLastReportPage(page, size)
+              }}
+            />
+          }
           <p style={{
             margin: '0 20px',
             fontFamily: 'Open Sans',
             fontSize: '14px'
             // cursor: 'pointer'
           }}
-          >{from} - {to} of {sentBroadcasts.max_entries}</p>
+          >
+            {from} - {to} of {sentBroadcasts.max_entries}
+          </p>
+          {sentBroadcasts?.list?.length > 25 &&
 
-          <FontAwesomeIcon
-            style={{
-              // margin: '0 20px 0 0',
-              cursor: 'pointer'
-            }}
-            icon={faChevronRight}
-            onClick={() => {
-              if (to < sentBroadcasts.max_entries) {
-                getNextReportPage(page, size)
-              }
-            }} />
+            <FontAwesomeIcon
+              style={{
+                // margin: '0 20px 0 0',
+                cursor: 'pointer'
+              }}
+              icon={faChevronRight}
+              onClick={() => {
+                if (to < sentBroadcasts.max_entries) {
+                  getNextReportPage(page, size)
+                }
+              }} />
+          }
         </div>
       }
     </section>

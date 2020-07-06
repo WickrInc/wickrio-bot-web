@@ -26,6 +26,7 @@ const MessageContextProvider = ({ children, location }) => {
   const [repeatNum, setRepeatNumber] = useState(false)
   const [freq, setFreq] = useState(false)
   const [attachment, setAttachment] = useState(false)
+  const [userListFile, setUserListFile] = useState(false)
   const [selectedSecGroup, setSelectedSecGroup] = useState(null)
 
   // recieve token via search params, send as authorization header
@@ -68,7 +69,7 @@ const MessageContextProvider = ({ children, location }) => {
   }
 
   const sendBroadcast = async () => {
-    console.log({ message, acknowledge, repeat, selectedSecGroup, freq, repeatNum, attachment })
+    console.log({ message, acknowledge, repeat, selectedSecGroup, freq, repeatNum, attachment, userListFile })
     if (!message) return console.log("need a message")
     const broadcastpath = encodeURI(`${baseAPIurl}/Message`)
 
@@ -150,6 +151,8 @@ const MessageContextProvider = ({ children, location }) => {
     }
 
   }
+
+
   const downloadReport = async (id, page, size) => {
     const statuspath = encodeURI(`${baseAPIurl}/Report/${id}/${page}/${size}`)
     try {

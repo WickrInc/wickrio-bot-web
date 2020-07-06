@@ -43,12 +43,12 @@ const Row = ({ user }, idx) => {
 
       <TableCell align="center">
         <p className="sentmessagereport">
-          {user.user}
+          {user.status}
         </p>
       </TableCell>
       <TableCell align="center">
         <p className="sentmessagereport">
-          {user.status}
+          {user.user}
         </p>
       </TableCell>
 
@@ -230,7 +230,8 @@ const Report = ({ id }) => {
           <p className="subtitle-report">{`Sent on ${date.toLocaleDateString()} at ${date.toLocaleTimeString()} to ${secGroup.name}`}</p>
           <div style={{
             display: 'flex',
-            margin: '25px 0'
+            margin: '25px 0',
+            overflow: 'scroll'
 
           }}>
             <div style={{
@@ -330,9 +331,6 @@ const Report = ({ id }) => {
                   <TableRow >
                     <TableCell
                       className={classes.theader}
-                      align="center">Name</TableCell>
-                    <TableCell
-                      className={classes.theader}
                     // align={headCell.numeric ? 'right' : 'left'}
                     // padding={headCell.disablePadding ? 'none' : 'default'}
                     >
@@ -344,6 +342,9 @@ const Report = ({ id }) => {
                         Status
                         </TableSortLabel>
                     </TableCell>
+                    <TableCell
+                      className={classes.theader}
+                      align="center">Name</TableCell>
                     <TableCell
                       className={classes.theader}
                       align="center">Message</TableCell>
@@ -382,17 +383,19 @@ const Report = ({ id }) => {
                 justifyContent: 'flex-end',
                 margin: '10px 32px'
               }}>
+                {total > 25 &&
 
-                <FontAwesomeIcon
-                  style={{
-                    // margin: '0 20px 0 0',
-                    cursor: 'pointer'
-                  }}
-                  icon={faChevronLeft}
-                  onClick={() => {
-                    getLastReportPage(report.messageID, page, size)
-                  }}
-                />
+                  <FontAwesomeIcon
+                    style={{
+                      // margin: '0 20px 0 0',
+                      cursor: 'pointer'
+                    }}
+                    icon={faChevronLeft}
+                    onClick={() => {
+                      getLastReportPage(report.messageID, page, size)
+                    }}
+                  />
+                }
                 {/* <p>{page == 0 ? ((page == 0 ? 1 : page) * size - 24) : }-{Math.min(sentBroadcasts.list.length, (page == 0 ? 1 : page) * size)} of {sentBroadcasts.max_entries}</p> */}
                 {/* <p>{(page == 0 ? 1 : page) * size - sentBroadcasts.list.length + 1}-{Math.min(sentBroadcasts.list.length, (page == 0 ? 1 : page) * size)} of {sentBroadcasts.max_entries}</p> */}
                 <p style={{
@@ -401,19 +404,23 @@ const Report = ({ id }) => {
                   fontSize: '14px'
                   // cursor: 'pointer'
                 }}
-                >{from} - {to} of {total}</p>
+                >
+                  {from} - {to} of {total}
+                </p>
+                {total > 25 &&
 
-                <FontAwesomeIcon
-                  style={{
-                    // margin: '0 20px 0 0',
-                    cursor: 'pointer'
-                  }}
-                  icon={faChevronRight}
-                  onClick={() => {
-                    if (to < total) {
-                      getNextReportPage(report.messageID, page, size)
-                    }
-                  }} />
+                  <FontAwesomeIcon
+                    style={{
+                      // margin: '0 20px 0 0',
+                      cursor: 'pointer'
+                    }}
+                    icon={faChevronRight}
+                    onClick={() => {
+                      if (to < total) {
+                        getNextReportPage(report.messageID, page, size)
+                      }
+                    }} />
+                }
               </div>
             }
           </section>
