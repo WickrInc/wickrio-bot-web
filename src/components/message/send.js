@@ -227,7 +227,7 @@ const SendMessage = () => {
           >
             <MenuItem value='default' disabled>{secGroups.length > 1 ? 'Select Security Groups' : 'Getting Security Groups'}</MenuItem>
             <MenuItem value="NETWORK">Whole network</MenuItem>
-            {secGroups > 0 && secGroups?.map((secgroup, idx) => {
+            {secGroups.length > 0 && secGroups?.map((secgroup, idx) => {
               return (
                 <MenuItem value={secgroup.id} key={idx}>{secgroup.name}</MenuItem>
               )
