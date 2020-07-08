@@ -225,7 +225,7 @@ const SendMessage = () => {
             }}
             className={`${classes.select} minWidth`}
           >
-            <MenuItem value='default' disabled>{secGroups.length > 1 ? 'Select Security Groups' : 'Getting Security Groups'}</MenuItem>
+            <MenuItem value='default' disabled>{secGroups.length > 0 ? 'Select Security Groups' : 'Getting Security Groups'}</MenuItem>
             <MenuItem value="NETWORK">Whole network</MenuItem>
             {secGroups.length > 0 && secGroups?.map((secgroup, idx) => {
               return (
