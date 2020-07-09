@@ -210,7 +210,7 @@ const SendMessage = () => {
             labelId="secgroup-label"
             name="secgroup"
             id='secgroup'
-            disabled={secGroups.length > 1 ? false : true}
+            disabled={secGroups.length > 0 ? false : true}
             // value={age}
             // onChange={handleChange}
             defaultValue="default"
