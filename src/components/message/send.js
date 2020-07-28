@@ -1,29 +1,44 @@
 import React, { useEffect, useContext } from "react"
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+import InputLabel from "@material-ui/core/InputLabel"
+import MenuItem from "@material-ui/core/MenuItem"
+import FormHelperText from "@material-ui/core/FormHelperText"
+import FormControl from "@material-ui/core/FormControl"
+import Select from "@material-ui/core/Select"
 import { Link } from "gatsby"
 import { MessageContext } from "../context"
 // import Attach from "../images/attach"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPaperclip, faMicrophone, faMapMarkerAlt, faTimes } from '@fortawesome/free-solid-svg-icons'
-import { Button, makeStyles, TextField, FormControlLabel, Checkbox } from '@material-ui/core';
-import Chip from '@material-ui/core/Chip';
-import Tooltip from '@material-ui/core/Tooltip';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import {
+  faPaperclip,
+  faMicrophone,
+  faMapMarkerAlt,
+  faTimes,
+} from "@fortawesome/free-solid-svg-icons"
+import {
+  Button,
+  makeStyles,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+} from "@material-ui/core"
+import Chip from "@material-ui/core/Chip"
+import Tooltip from "@material-ui/core/Tooltip"
+import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank"
+import CheckBoxIcon from "@material-ui/icons/CheckBox"
 
-let repeatlist = [{
-  value: 2,
-  name: '2 times'
-}]
+let repeatlist = [
+  {
+    value: 2,
+    name: "2 times",
+  },
+]
 
-let freqlist = [{
-  value: 1500,
-  name: 'every 15 seconds'
-}]
+let freqlist = [
+  {
+    value: 1500,
+    name: "every 15 seconds",
+  },
+]
 
 // add ALL GROUPS / WHOLE NETWORK
 // be able to see uplaoded file preview
@@ -47,7 +62,7 @@ const SendMessage = () => {
     setRepeatNumber,
     selectedSecGroup,
     repeat,
-    setAttachment
+    setAttachment,
   } = useContext(MessageContext)
   // run immediately & everytime state changes
 
@@ -58,90 +73,90 @@ const SendMessage = () => {
   }, [])
 
   const buildFileSelector = () => {
-    const fileSelector = document.createElement('input');
-    fileSelector.setAttribute('type', 'file');
-    fileSelector.setAttribute('id', 'file');
-    fileSelector.setAttribute('name', 'attachment');
-    fileSelector.addEventListener("change", (event) => {
+    const fileSelector = document.createElement("input")
+    fileSelector.setAttribute("type", "file")
+    fileSelector.setAttribute("id", "file")
+    fileSelector.setAttribute("name", "attachment")
+    fileSelector.addEventListener("change", event => {
       setAttachment(fileSelector.files[0])
     })
-    fileSelector.click();
+    fileSelector.click()
   }
 
   const useStyles = makeStyles(() => ({
     text: {
-      '& .MuiOutlinedInput-root': {
-        height: '100%',
-        fontSize: '14px',
-        '& fieldset': {
+      "& .MuiOutlinedInput-root": {
+        height: "100%",
+        fontSize: "14px",
+        "& fieldset": {
           // borderColor: '#f39200',
         },
-        '&:hover fieldset': {
+        "&:hover fieldset": {
           // borderColor: '#f39200',
         },
-        '&.Mui-focused fieldset': {
-          borderColor: '#f39200',
+        "&.Mui-focused fieldset": {
+          borderColor: "#f39200",
         },
       },
     },
     select: {
-      '&.MuiOutlinedInput-root': {
-        height: '48px',
-        fontSize: '14px',
-        '&.Mui-focused': {
-          borderColor: '#f39200',
+      "&.MuiOutlinedInput-root": {
+        height: "48px",
+        fontSize: "14px",
+        "&.Mui-focused": {
+          borderColor: "#f39200",
         },
-        '&.Mui-focused fieldset': {
-          borderColor: '#f39200',
+        "&.Mui-focused fieldset": {
+          borderColor: "#f39200",
         },
       },
     },
     color: {
-      backgroundColor: '#f39200',
-      color: '#ffffff',
-      fontFamily: 'Open Sans',
-      fontSize: '14px',
+      backgroundColor: "#f39200",
+      color: "#ffffff",
+      fontFamily: "Open Sans",
+      fontSize: "14px",
       fontWeight: 600,
       lineHeight: 1.14,
-      padding: '10px 23px',
-      letterSpacing: '1.28px',
-      '&:hover': {
-        opacity: .7,
-        backgroundColor: '#f39200'
+      padding: "10px 23px",
+      letterSpacing: "1.28px",
+      "&:hover": {
+        opacity: 0.7,
+        backgroundColor: "#f39200",
       },
-      '&:active': {
-        opacity: .7,
-        backgroundColor: '#f39200'
-      }
+      "&:active": {
+        opacity: 0.7,
+        backgroundColor: "#f39200",
+      },
     },
     labels: {
-      padding: '4px 20px',
-      fontFamily: 'Open Sans',
-      fontSize: '14px',
+      padding: "4px 20px",
+      fontFamily: "Open Sans",
+      fontSize: "14px",
       fontWeight: 600,
       lineHeight: 1.14,
-      letterSpacing: '1.28px',
-      textAlign: 'right',
-      minWidth: '120px',
+      letterSpacing: "1.28px",
+      textAlign: "right",
+      minWidth: "120px",
       /* margin-right: 24px; */
-      color: 'rgba(0, 0, 0, 0.87)'
+      color: "rgba(0, 0, 0, 0.87)",
     },
     inputs: {
-      borderRadius: '4px',
-      border: 'solid 1px var(--bg-light)',
-      backgroundColor: 'var(--light)'
+      borderRadius: "4px",
+      border: "solid 1px var(--bg-light)",
+      backgroundColor: "var(--light)",
     },
     icon: {
-      '&:hover': {
-        color: 'var(--secondary)'
-      }
+      "&:hover": {
+        color: "var(--secondary)",
+      },
     },
     chip: {
-      bottom: '8px',
-      position: 'absolute',
-      left: '10px'
-    }
-  }));
+      bottom: "8px",
+      position: "absolute",
+      left: "10px",
+    },
+  }))
 
   // const ColorButton = withStyles(() => ({
   //   root: {
@@ -156,12 +171,12 @@ const SendMessage = () => {
   // console.log((!message.trim() || !selectedSecGroup) ?
   //   true :
   //   false)
-  const classes = useStyles();
+  const classes = useStyles()
   return (
     <form
       className={`grid border`}
       style={{
-        padding: '20px 16px',
+        padding: "20px 16px",
         // minWidth: '375px'
         // minWidth: '350px''
       }}
@@ -176,90 +191,101 @@ const SendMessage = () => {
       <h3 className="title">New Broadcast Message</h3>
       <Button
         // type="button"
-        disabled={
-          !message.trim() || !selectedSecGroup ?
-            true :
-            false
-        }
+        disabled={!message.trim() || !selectedSecGroup ? true : false}
         onClick={() => sendBroadcast()}
         className={`${classes.color} sentButton`}
         // className={message ? "sendButton" : 'disabledSendButton'}
         variant="contained"
-      // color="primary"
-      >Send</Button>
+        // color="primary"
+      >
+        Send
+      </Button>
       {/* </div> */}
 
-
-
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        // marginBottom: '12px',
-        flexWrap: 'wrap',
-        gridColumn: '1/3'
-      }}>
-
-        <InputLabel className={classes.labels} id="secgroup-label">Send To</InputLabel>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          // marginBottom: '12px',
+          flexWrap: "wrap",
+          gridColumn: "1/3",
+        }}
+      >
+        <InputLabel className={classes.labels} id="secgroup-label">
+          Send To
+        </InputLabel>
 
         <FormControl
           variant="outlined"
-          style={{
-            // width: '100%'
-          }}>
+          style={
+            {
+              // width: '100%'
+            }
+          }
+        >
           <Select
             labelId="secgroup-label"
             name="secgroup"
-            id='secgroup'
-            disabled={secGroups.length > 0 ? false : true}
-            // value={age}
+            id="secgroup"
+            disabled={!secGroups.received}
+            value={selectedSecGroup ? selectedSecGroup : `default`}
             // onChange={handleChange}
-            defaultValue="default"
+            // defaultValue="default"
             onChange={e => {
               setSelectedSecGroup(e.target.value)
             }}
             // label="secgroup"
             style={{
-              fontFamily: 'Open Sans',
-              fontSize: '14px',
-              textIndent: '6px',
+              fontFamily: "Open Sans",
+              fontSize: "14px",
+              textIndent: "6px",
             }}
             className={`${classes.select} minWidth`}
           >
-            <MenuItem value='default' disabled>{secGroups.length > 0 ? 'Select Security Groups' : 'Getting Security Groups'}</MenuItem>
+            <MenuItem value="default" disabled>
+              {secGroups.received
+                ? "Select Security Groups"
+                : "Getting Security Groups"}
+            </MenuItem>
             <MenuItem value="NETWORK">Whole network</MenuItem>
-            {secGroups.length > 0 && secGroups?.map((secgroup, idx) => {
-              return (
-                <MenuItem value={secgroup.id} key={idx}>{secgroup.name}</MenuItem>
-              )
-            })
-            }
+            {secGroups.received &&
+              secGroups.data.map((secgroup, idx) => {
+                return (
+                  <MenuItem value={secgroup.id} key={idx}>
+                    {secgroup.name}
+                  </MenuItem>
+                )
+              })}
           </Select>
         </FormControl>
-
-
       </div>
-      <div style={{
-        display: 'flex',
-        position: 'relative',
-        alignItems: 'center',
-        flexWrap: 'wrap',
-        gridColumn: '1/3'
-      }}>
-
+      <div
+        style={{
+          display: "flex",
+          position: "relative",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gridColumn: "1/3",
+        }}
+      >
         <label
           className="labels"
           htmlFor="text"
           style={{
-            padding: '4px 20px',
-          }}>Message</label>
-        <div style={{
-          fontFamily: 'Open Sans',
-          flex: 1,
-          position: 'relative',
-          // padding: '16px 14px'
-        }}
-          className="minWidth">
-
+            padding: "4px 20px",
+          }}
+        >
+          Message
+        </label>
+        <div
+          style={{
+            fontFamily: "Open Sans",
+            flex: 1,
+            position: "relative",
+            // padding: '16px 14px'
+          }}
+          className="minWidth"
+        >
           <TextField
             id="text"
             name="text"
@@ -278,34 +304,34 @@ const SendMessage = () => {
             className={`${classes.text} minWidth`}
             style={{
               flex: 1,
-              fontSize: '14px',
-              fontFamily: 'Open Sans',
+              fontSize: "14px",
+              fontFamily: "Open Sans",
               // height: '160px'
               // padding: '16px 14px'
             }}
           />
-          {attachment &&
+          {attachment && (
             <Chip
               // icon={<FaceIcon />
               style={{
-                borderRadius: '2px'
+                borderRadius: "2px",
               }}
               label={attachment.name}
               // onClick={handleClick}
               className={classes.chip}
               onDelete={() => {
                 setAttachment(null)
-
               }}
             />
-
-          }
-          <div style={{
-            display: 'flex',
-            position: 'absolute',
-            right: '10px',
-            bottom: '5px'
-          }}>
+          )}
+          <div
+            style={{
+              display: "flex",
+              position: "absolute",
+              right: "10px",
+              bottom: "5px",
+            }}
+          >
             {/* <Tooltip title="Add a voice memo" aria-label="add voice" style={{
               margin: '0 16px'
             }}>
@@ -323,34 +349,30 @@ const SendMessage = () => {
 
             <Tooltip title="Add a file" aria-label="add file">
               <span>
-
                 <FontAwesomeIcon
                   size="1x"
                   icon={faPaperclip}
-                  onClick={() => buildFileSelector()
+                  onClick={
+                    () => buildFileSelector()
                     // setAttachment()
                   }
                   style={{
-                    cursor: 'pointer',
+                    cursor: "pointer",
                   }}
                   className={classes.icon}
                 />
               </span>
             </Tooltip>
           </div>
-
-
         </div>
-
       </div>
       <div
         className="checkboxes"
         style={{
-          gridColumn: '1/3'
-        }}>
+          gridColumn: "1/3",
+        }}
+      >
         <div>
-
-
           <Checkbox
             checked={acknowledge}
             onChange={e => {
@@ -364,16 +386,14 @@ const SendMessage = () => {
             style={{
               // padding: '0 8px',
               height: 14,
-              width: 14
+              width: 14,
             }}
           />
-          <label
-            className="smlabels"
-            htmlFor="acknowledge">Ask for acknowledgement </label>
+          <label className="smlabels" htmlFor="acknowledge">
+            Ask for acknowledgement{" "}
+          </label>
         </div>
         <div>
-
-
           {/* <Checkbox
             disabled
             checked={repeat}
@@ -462,8 +482,7 @@ const SendMessage = () => {
           </select>
         </div>
       </div> */}
-
-    </form >
+    </form>
   )
 }
 
