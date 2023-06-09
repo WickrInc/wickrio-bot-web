@@ -12,7 +12,7 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/styles": "^4.10.0",
     "axios": "^0.21.2",
-    "gatsby": "^5.6.1",
+    "gatsby": "^5.9.1",
     "gatsby-cli": "^5.6.0",
     "gatsby-plugin-image": "^3.6.0",
     "gatsby-plugin-create-client-paths": "^2.3.5",
